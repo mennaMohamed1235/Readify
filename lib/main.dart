@@ -1,24 +1,23 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-//import 'package:google_fonts/google_fonts.dart';
 import 'package:readify/ChangePassword.dart';
 import 'package:readify/SignUpAuthor.dart';
 import 'package:readify/SignUpUser.dart';
-import 'package:readify/Verification.dart';
 import 'package:readify/congratulation.dart';
 import 'package:readify/setting.dart';
 import 'package:readify/signin.dart';
+import 'package:readify/verf.dart';
 
 void main() {
   runApp(congratulation());
   runApp(ChangePassword());
-  runApp(SignIn());
   // ignore: prefer_const_constructors
   runApp(settings());
-  runApp(Verification());
   runApp(SignUpUser());
   runApp(signup_author());
   runApp(Splach());
+  runApp(SignIn());
+  runApp(VerificationPage());
 }
 
 class Splach extends StatelessWidget {

@@ -36,12 +36,13 @@ class _SignInState extends State<SignIn> {
             child: SingleChildScrollView(
               child: Column(
                 children: [
-                  Image.asset(
-                    'images/431382558_934333264581957_6966909f827530271850_n.jpg',
-                    height: 460,
-                    width: 360,
+                  Container(
+                    height: MediaQuery.of(context).size.height * 0.7,
+                    child: Image.asset(
+                      'images/431382558_934333264581957_6966909f827530271850_n.jpg',
+                      fit: BoxFit.cover,
+                    ),
                   ),
-                  const SizedBox(height: 1),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 25),
                     child: Container(
