@@ -10,14 +10,15 @@ import 'package:readify/verf.dart';
 
 void main() {
   runApp(congratulation());
-  runApp(ChangePassword());
+  // ignore: prefer_const_constructors
   // ignore: prefer_const_constructors
   runApp(settings());
-  runApp(SignUpUser());
   runApp(signup_author());
+  runApp(VerificationPage());
   runApp(Splach());
   runApp(SignIn());
-  runApp(VerificationPage());
+  runApp(ChangePassword());
+  runApp(SignUpUser());
 }
 
 class Splach extends StatelessWidget {
@@ -53,7 +54,7 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       body: Center(
         child: Image(
-          image: AssetImage('images/DCA0A867-617E-4304-BAFE-DEE7F67AB295.jpeg'),
+          image: AssetImage('images/1A8AB0CD-A5B1-4713-9118-9BC3950BD2A1.jpeg'),
         ),
       ),
     );

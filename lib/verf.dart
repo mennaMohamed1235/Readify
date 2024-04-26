@@ -1,4 +1,7 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:readify/congratulation.dart';
 
 class VerificationPage extends StatefulWidget {
   @override
@@ -8,6 +11,46 @@ class VerificationPage extends StatefulWidget {
 class _VerificationPageState extends State<VerificationPage> {
   List<TextEditingController> _controllers =
       List.generate(6, (index) => TextEditingController());
+
+  String errorMessage = ''; // Error message for verification failure
+
+  Future<void> _verifyCode() async {
+    String code = _controllers.map((controller) => controller.text).join();
+    final url = Uri.parse('http://readify.runasp.net/api/Auth/VerifyEmail');
+    final response = await http.post(
+      url,
+      body: json.encode({'code': code}),
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => congratulation()),
+      );
+    } else {
+      setState(() {
+        errorMessage = 'Verification failed. Please try again.';
+      });
+    }
+  }
+
+  Future<void> _resendCode() async {
+    final url =
+        Uri.parse('http://readify.runasp.net/api/Auth/ResendVerificationCode');
+    final response = await http.post(
+      url,
+      headers: {'Content-Type': 'application/json'},
+    );
+
+    if (response.statusCode == 200) {
+      print('Resend code successful!');
+      // You can show a message or perform any additional action
+    } else {
+      // Resend code failed
+      print('Resend code failed');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,21 +64,23 @@ class _VerificationPageState extends State<VerificationPage> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
+                SizedBox(height: 50.0),
                 Container(
-                  height: MediaQuery.of(context).size.height * 0.5,
+                  height: MediaQuery.of(context).size.height * 0.3,
                   child: Image.asset(
-                    'images/images (1).png',
+                    'images/21885736-833B-451D-A4A4-2DFE81AD8819.jpeg',
                     fit: BoxFit.cover,
                   ),
                 ),
+                SizedBox(height: 30.0),
                 Text(
                   ' Verify your email ',
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  '  Please enter the 6-digit code sent to regors@example.com   ',
+                  ' Please enter the 6-digit code sent to the email you wrote    ',
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: 50.0),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: List.generate(
@@ -67,30 +112,27 @@ class _VerificationPageState extends State<VerificationPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20.0),
+                SizedBox(height: 10.0),
                 TextButton(
-                  onPressed: () {
-                    // Resend code functionality
-                    // Implement resend code logic here
-                  },
+                  onPressed: _resendCode, // Call _resendCode on button press
                   child: Text('Resend Code'),
                 ),
-                SizedBox(height: 10),
+                SizedBox(height: 20.0),
                 ElevatedButton(
-                  onPressed: () {
-                    // Confirm button functionality
-                    // Implement confirm code logic here
-                  },
-                  child: Text('Confirm'),
+                  onPressed: _verifyCode,
+                  child: const Text('Verify'),
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: Colors.white,
+                    backgroundColor: Color(0xFF28277D),
+                  ),
                 ),
-                SizedBox(height: 10),
-                ElevatedButton(
-                  onPressed: () {
-                    // Change email button functionality
-                    // Implement change email code logic here
-                  },
-                  child: Text('Change Email'),
-                ),
+                SizedBox(height: 10.0),
+                // Show error message if verification fails
+                if (errorMessage.isNotEmpty)
+                  Text(
+                    errorMessage,
+                    style: TextStyle(color: Colors.red),
+                  ),
               ],
             ),
           ),

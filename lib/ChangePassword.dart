@@ -1,33 +1,63 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:http/http.dart' as http;
 
 class ChangePassword extends StatefulWidget {
   @override
   _ChangePasswordState createState() => _ChangePasswordState();
 }
 
-class _ChangePasswordState extends State<ChangePassword> {
+class _ChangePasswordState extends State {
   TextEditingController currentPasswordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController retypePasswordController = TextEditingController();
   String errorMessage = '';
 
-  void validatePasswords() {
+  Future<void> changePassword() async {
     if (currentPasswordController.text.isEmpty ||
         newPasswordController.text.isEmpty ||
         retypePasswordController.text.isEmpty) {
       setState(() {
         errorMessage = 'Please fill in all password fields';
       });
-    } else if (newPasswordController.text == retypePasswordController.text) {
+      return;
+    } else if (newPasswordController.text != retypePasswordController.text) {
+      setState(() {
+        errorMessage = 'Passwords do not match';
+      });
+      return;
+    } else {
       setState(() {
         errorMessage = '';
       });
-      // Passwords match, you can proceed with the change password logic
-    } else {
-      setState(() {
-        errorMessage = 'Passwords mismatch';
-      });
+    }
+
+    final Map<String, dynamic> requestData = {
+      "email": "your_email@example.com",
+      "currentPassword": currentPasswordController.text,
+      "newPassword": newPasswordController.text,
+    };
+
+    final String url = 'http://readify.runasp.net/api/Auth/ChangePasswordAsync';
+    try {
+      final http.Response response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(requestData),
+      );
+
+      if (response.statusCode == 200) {
+        print('Password changed successfully');
+      } else {
+        print('Failed to change password');
+      }
+    } catch (e) {
+      // Exception occurred during the HTTP request
+      // You can handle the exception scenario here
+      print('Exception occurred: $e');
     }
   }
 
@@ -41,12 +71,12 @@ class _ChangePasswordState extends State<ChangePassword> {
           backgroundColor: const Color(0xFFFDFDFD),
           title: Row(
             children: [
-              const SizedBox(width: 10),
+              const SizedBox(width: 0.5),
               IconButton(
                 icon: const Icon(Icons.arrow_back_ios_new_rounded),
                 onPressed: () {},
               ),
-              const SizedBox(width: 90),
+              const SizedBox(width: 30),
               Text('Change password',
                   style:
                       GoogleFonts.robotoCondensed(fontWeight: FontWeight.bold)),
@@ -112,7 +142,6 @@ class _ChangePasswordState extends State<ChangePassword> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: TextField(
                         controller: retypePasswordController,
-                        // obscureText: true,
                         decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Re-type New Password',
@@ -132,7 +161,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 const SizedBox(height: 15),
                 ElevatedButton(
                   onPressed: () {
-                    validatePasswords();
+                    changePassword();
                   },
                   child: const Text('Change password'),
                   style: ElevatedButton.styleFrom(

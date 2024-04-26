@@ -1,17 +1,45 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:readify/SignUpAuthor.dart';
+import 'package:http/http.dart' as http;
 import 'package:readify/SignUpUser.dart';
-//import 'package:readify/main.dart';
+import 'package:readify/SignUpAuthor.dart';
+import 'package:readify/congratulation.dart';
 
 class SignIn extends StatefulWidget {
   @override
   _SignInState createState() => _SignInState();
 }
 
-class _SignInState extends State<SignIn> {
+class _SignInState extends State {
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   String errorMessage = '';
+
+  Future<void> signIn() async {
+    final String apiUrl = 'http://readify.runasp.net/api/Auth/Login';
+
+    final response = await http.post(
+      Uri.parse(apiUrl),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+      body: jsonEncode(<String, String>{
+        'email': _emailController.text,
+        'password': _passwordController.text,
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      Navigator.push(
+        context,
+        MaterialPageRoute(builder: (context) => congratulation()),
+      );
+    } else {
+      setState(() {
+        errorMessage = 'Authentication failed';
+      });
+    }
+  }
 
   void validatePasswords() {
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
@@ -88,19 +116,20 @@ class _SignInState extends State<SignIn> {
                   const SizedBox(height: 3),
                   ElevatedButton(
                     onPressed: () {
+                      signIn();
                       validatePasswords();
                     },
                     child: const Text('Sign in'),
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Color(0xFF28277D),
-                      fixedSize: Size(450, 32),
+                      fixedSize: Size(420, 30),
                     ),
                   ),
-                  const SizedBox(height: 5),
+                  const SizedBox(height: 1),
                   Row(
                     children: [
-                      const Text('      Don’t have an account?'),
+                      const Text('    Don’t have an account?'),
                       TextButton(
                         onPressed: () {
                           Navigator.push(

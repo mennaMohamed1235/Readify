@@ -34,12 +34,12 @@ class settings extends StatelessWidget {
         appBar: AppBar(
           backgroundColor: const Color(0xFFFFFFFF),
           title: Row(children: [
-            const SizedBox(width: 5),
+            const SizedBox(width: 0.5),
             IconButton(
               icon: const Icon(Icons.arrow_back_ios_new_rounded),
               onPressed: () {},
             ),
-            const SizedBox(width: 45),
+            const SizedBox(width: 72),
             Text('settings',
                 style:
                     GoogleFonts.robotoCondensed(fontWeight: FontWeight.bold)),
@@ -61,7 +61,7 @@ class settings extends StatelessWidget {
                 Text('Notification          ',
                     style: GoogleFonts.robotoCondensed(
                         fontWeight: FontWeight.bold)),
-                const SizedBox(width: 20),
+                const SizedBox(width: 120),
                 SwitchWidget(),
               ]),
               Row(children: [
@@ -69,7 +69,7 @@ class settings extends StatelessWidget {
                 Text('updates                 ',
                     style: GoogleFonts.robotoCondensed(
                         fontWeight: FontWeight.bold)),
-                const SizedBox(width: 20),
+                const SizedBox(width: 120),
                 SwitchWidget(),
               ]),
               Row(children: [
@@ -77,7 +77,7 @@ class settings extends StatelessWidget {
                 Text('language (Arabic)',
                     style: GoogleFonts.robotoCondensed(
                         fontWeight: FontWeight.bold)),
-                const SizedBox(width: 20),
+                const SizedBox(width: 120),
                 SwitchWidget(),
               ]),
               Row(children: [
@@ -85,7 +85,7 @@ class settings extends StatelessWidget {
                 Text('Dark mode            ',
                     style: GoogleFonts.robotoCondensed(
                         fontWeight: FontWeight.bold)),
-                const SizedBox(width: 20),
+                const SizedBox(width: 120),
                 SwitchWidget(),
               ]),
             ],
