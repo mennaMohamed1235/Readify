@@ -15,9 +15,9 @@ void main() {
   runApp(VerificationPage());
   runApp(ChangePassword());
   runApp(SignIn());
-  runApp(SignUpUser());
   runApp(CongratulationsScreen());
   runApp(PersonalDataScreen());
+  runApp(SignUpUser());
   runApp(Splach());
 }
 
