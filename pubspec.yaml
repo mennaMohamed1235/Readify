@@ -68,9 +68,10 @@ flutter:
    - images/images (1).png
    - images/431382558_934333264581957_6966909f827530271850_n.jpg
    - images/A36F26CE-D860-4C98-8827-00ED5857AA6E.jpeg
-   - images/1A8AB0CD-A5B1-4713-9118-9BC3950BD2A1.jpeg
    - images/21885736-833B-451D-A4A4-2DFE81AD8819.jpeg
+   - images/74E328AC-07CA-4C9D-AA88-63AE66EF4C78.jpeg 
    - images/149071.png
+   - assets/icons/
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

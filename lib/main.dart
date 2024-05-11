@@ -1,24 +1,24 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:readify/ChangePassword.dart';
-import 'package:readify/SignUpAuthor.dart';
 import 'package:readify/SignUpUser.dart';
 import 'package:readify/congratulation.dart';
+import 'package:readify/profile/personal_data.dart';
 import 'package:readify/setting.dart';
 import 'package:readify/signin.dart';
 import 'package:readify/verf.dart';
 
 void main() {
-  runApp(congratulation());
   // ignore: prefer_const_constructors
   // ignore: prefer_const_constructors
   runApp(settings());
-  runApp(signup_author());
   runApp(VerificationPage());
-  runApp(Splach());
-  runApp(SignIn());
   runApp(ChangePassword());
+  runApp(SignIn());
   runApp(SignUpUser());
+  runApp(CongratulationsScreen());
+  runApp(PersonalDataScreen());
+  runApp(Splach());
 }
 
 class Splach extends StatelessWidget {
@@ -52,9 +52,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Color(0xFF141478),
       body: Center(
         child: Image(
-          image: AssetImage('images/1A8AB0CD-A5B1-4713-9118-9BC3950BD2A1.jpeg'),
+          image: AssetImage('images/74E328AC-07CA-4C9D-AA88-63AE66EF4C78.jpeg'),
         ),
       ),
     );

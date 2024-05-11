@@ -1,9 +1,10 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:readify/ChangePassword.dart';
 import 'package:readify/SignUpUser.dart';
 import 'package:readify/SignUpAuthor.dart';
-import 'package:readify/congratulation.dart';
+//import 'package:readify/congratulation.dart';
 
 class SignIn extends StatefulWidget {
   @override
@@ -32,8 +33,9 @@ class _SignInState extends State {
     if (response.statusCode == 200) {
       Navigator.push(
         context,
-        MaterialPageRoute(builder: (context) => congratulation()),
+        MaterialPageRoute(builder: (context) => ChangePassword()),
       );
+      //print('authetintacation sussesfull');
     } else {
       setState(() {
         errorMessage = 'Authentication failed';
@@ -123,7 +125,7 @@ class _SignInState extends State {
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
                       backgroundColor: Color(0xFF28277D),
-                      fixedSize: Size(420, 30),
+                      fixedSize: const Size(450, 45),
                     ),
                   ),
                   const SizedBox(height: 1),
@@ -148,21 +150,26 @@ class _SignInState extends State {
                       ),
                     ],
                   ),
-                  TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => signup_author()),
-                      );
-                    },
-                    child: const Text('Sign up as an author'),
-                    style: TextButton.styleFrom(
-                      textStyle: const TextStyle(
-                        fontSize: 15,
-                        color: Color(0xFF28277D),
+                  Row(
+                    children: [
+                      TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => signup_author()),
+                          );
+                        },
+                        child: const Text(' Sign up as an author'),
+                        style: TextButton.styleFrom(
+                          textStyle: const TextStyle(
+                            fontSize: 15,
+                            color: Color(0xFF28277D),
+                          ),
+                        ),
                       ),
-                    ),
+                      SizedBox(width: 30),
+                    ],
                   ),
                   errorMessage.isNotEmpty
                       ? Text(

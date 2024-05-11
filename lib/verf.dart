@@ -26,7 +26,7 @@ class _VerificationPageState extends State<VerificationPage> {
     if (response.statusCode == 200) {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => congratulation()),
+        MaterialPageRoute(builder: (context) => CongratulationsScreen()),
       );
     } else {
       setState(() {

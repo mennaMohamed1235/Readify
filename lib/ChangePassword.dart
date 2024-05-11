@@ -8,14 +8,17 @@ class ChangePassword extends StatefulWidget {
   _ChangePasswordState createState() => _ChangePasswordState();
 }
 
-class _ChangePasswordState extends State {
+class _ChangePasswordState extends State<ChangePassword> {
   TextEditingController currentPasswordController = TextEditingController();
   TextEditingController newPasswordController = TextEditingController();
   TextEditingController retypePasswordController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+
   String errorMessage = '';
 
   Future<void> changePassword() async {
-    if (currentPasswordController.text.isEmpty ||
+    if (emailController.text.isEmpty ||
+        currentPasswordController.text.isEmpty ||
         newPasswordController.text.isEmpty ||
         retypePasswordController.text.isEmpty) {
       setState(() {
@@ -34,7 +37,7 @@ class _ChangePasswordState extends State {
     }
 
     final Map<String, dynamic> requestData = {
-      "email": "your_email@example.com",
+      "email": emailController.text,
       "currentPassword": currentPasswordController.text,
       "newPassword": newPasswordController.text,
     };
@@ -89,6 +92,27 @@ class _ChangePasswordState extends State {
             child: Column(
               children: [
                 const SizedBox(height: 15),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFFFFF),
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 20),
+                      child: TextField(
+                        controller: emailController,
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                          hintText: 'Email',
+                          hintStyle: TextStyle(color: Color(0xFFD0D0D0)),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
