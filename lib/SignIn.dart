@@ -2,8 +2,8 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:readify/ChangePassword.dart';
-import 'package:readify/SignUpUser.dart';
 import 'package:readify/SignUpAuthor.dart';
+import 'package:readify/SignUpUser.dart';
 //import 'package:readify/congratulation.dart';
 
 class SignIn extends StatefulWidget {
@@ -157,7 +157,7 @@ class _SignInState extends State {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => signup_author()),
+                                builder: (context) => SignupAuthor()),
                           );
                         },
                         child: const Text(' Sign up as an author'),

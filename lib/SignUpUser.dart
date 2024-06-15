@@ -1,9 +1,8 @@
-import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:http/http.dart' as http;
+import 'package:dio/dio.dart';
 import 'package:readify/verf.dart';
 
 void main() {
@@ -206,7 +205,6 @@ class _SignUpUserState extends State<SignUpUser> {
                               border: OutlineInputBorder(
                                 borderSide:
                                     BorderSide(color: Color(0xFFC4C4C4)),
-                                borderRadius: BorderRadius.circular(6),
                               ),
                               filled: true,
                               fillColor: Colors.white,
@@ -263,7 +261,6 @@ class _SignUpUserState extends State<SignUpUser> {
 
   Future<void> _register(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
-      // Form validation failed
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Please fill all required fields.'),
@@ -273,33 +270,46 @@ class _SignUpUserState extends State<SignUpUser> {
       return;
     }
 
-    final url = Uri.parse('http://readify.runasp.net/api/Auth/Register');
-    final response = await http.post(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-        'accept': '/',
-      },
-      body: jsonEncode({
-        'FirstName': firstNameController.text,
-        'MiddleName': middleNameController.text,
-        'LastName': lastNameController.text,
-        'BirthDate':
-            '${selectedDate.day}-${selectedDate.month}-${selectedDate.year}',
-        'PhoneNumber': phoneNumberController.text,
-        'Email': emailController.text,
-        'Password': passwordController.text,
-        'isAuther': false,
-      }),
-    );
+    registerUser(context);
+  }
 
-    if (response.statusCode == 200) {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => VerificationPage()),
+  void registerUser(BuildContext context) async {
+    FormData formData = FormData.fromMap({
+      'FirstName': firstNameController.text,
+      'MiddleName': middleNameController.text,
+      'LastName': lastNameController.text,
+      'PhoneNumber': phoneNumberController.text,
+      'Email': emailController.text,
+      'Password': passwordController.text,
+      'isAuther': false,
+      'BirthDate':
+          '${selectedDate.year}-${selectedDate.month}-${selectedDate.day}',
+      'NationalityId': '',
+    });
+
+    try {
+      var response = await Dio().post(
+        'http://readify.runasp.net/api/Auth/Register',
+        data: formData,
+        options: Options(
+          headers: {
+            Headers.contentTypeHeader: 'multipart/form-data',
+          },
+        ),
       );
-    } else {
-      print('Registration failed: ${response.body}');
+
+      if (response.statusCode == 200) {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  VerificationPage(email: emailController.text)),
+        );
+      } else {
+        print('Registration failed: ${response.data}');
+      }
+    } catch (e) {
+      print('Error registering user: $e');
     }
   }
 

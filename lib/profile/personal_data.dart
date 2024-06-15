@@ -23,7 +23,7 @@ class PersonalDataScreen extends StatelessWidget {
       backgroundColor: const Color(0xFFFDFDFD),
       appBar: AppBar(
         title: Text(
-          '   Your Profile    ',
+          'Your Profile',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 25,
@@ -48,7 +48,7 @@ class PersonalDataScreen extends StatelessWidget {
               SizedBox(height: 20),
               buildDataRow("First Name", "menna"),
               buildDataRow("Middle Name", "mohamed"),
-              buildDataRow("LastName", "Elsayed"),
+              buildDataRow("Last Name", "Elsayed"),
               buildDataRow("Date of Birth", "22/11/2002"),
               buildDataRow("Phone number", "01092441655"),
               buildDataRow("Email", "mennamohamed2002@gmail.com"),
@@ -84,17 +84,18 @@ class PersonalDataScreen extends StatelessWidget {
   }
 
   Widget buildDataRow(String title, String value) {
-    return SizedBox(
-      height: 35,
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          Image.asset(
-            "assets/icons/profile_icon.png",
-            fit: BoxFit.contain,
-          ),
-          const SizedBox(
-            width: 20,
+          SizedBox(width: 20),
+          Text(
+            title + ": ",
+            style: TextStyle(
+              color: Colors.black,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
           ),
           Text(
             value,
