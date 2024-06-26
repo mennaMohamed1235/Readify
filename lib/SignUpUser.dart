@@ -32,7 +32,7 @@ class _SignUpUserState extends State<SignUpUser> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
   Uint8List? _image;
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate = DateTime(1920, 11, 22);
 
   @override
   Widget build(BuildContext context) {

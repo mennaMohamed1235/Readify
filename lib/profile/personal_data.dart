@@ -49,9 +49,9 @@ class PersonalDataScreen extends StatelessWidget {
               buildDataRow("First Name", "menna"),
               buildDataRow("Middle Name", "mohamed"),
               buildDataRow("Last Name", "Elsayed"),
-              buildDataRow("Date of Birth", "22/11/2002"),
+              buildDataRow("Birth Date", "22/11/2002"),
               buildDataRow("Phone number", "01092441655"),
-              buildDataRow("Email", "mennamohamed2002@gmail.com"),
+              buildDataRow("Email", "mennamohamed2002"),
               SizedBox(height: 30),
               buildButton(
                 text: "Change Password",

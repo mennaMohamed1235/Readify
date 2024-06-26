@@ -158,7 +158,10 @@ class _VerificationPageState extends State<VerificationPage> {
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
                 Text(
-                  'Please enter the 6-digit code sent to email ${widget.email}',
+                  'We sent a confirmation code to the email addreess that you provided: ${widget.email}',
+                ),
+                Text(
+                  'Please enter the 6-digit code ',
                 ),
                 const SizedBox(height: 50.0),
                 Form(

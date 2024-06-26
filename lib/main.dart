@@ -14,14 +14,14 @@ void main() {
   // ignore: prefer_const_constructors
   runApp(settings());
   runApp(ChangePassword());
-  runApp(SignIn());
-  runApp(CongratulationsScreen());
-  runApp(Splach());
   // ignore: prefer_typing_uninitialized_variables
   runApp(VerificationPage(email: ''));
   runApp(PersonalDataScreen());
-  runApp(SignUpUser());
+  runApp(Splach());
+  runApp(CongratulationsScreen());
   runApp(SignupAuthor());
+  runApp(SignUpUser());
+  runApp(SignIn());
 }
 
 class Splach extends StatelessWidget {

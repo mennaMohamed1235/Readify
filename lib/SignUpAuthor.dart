@@ -17,7 +17,7 @@ class MyDatePicker extends StatefulWidget {
 }
 
 class _MyDatePickerState extends State<MyDatePicker> {
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate = DateTime(1920, 11, 22);
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -61,7 +61,7 @@ class _SignupAuthorState extends State<SignupAuthor> {
   String selectedCountry = 'Egypt';
   String selectedDegree = 'Professor';
   String selectedSpecialization = 'Science';
-  DateTime selectedDate = DateTime.now();
+  DateTime selectedDate = DateTime(1920, 11, 22);
 
   Future<void> _pickImage(BuildContext context) async {
     showModalBottomSheet(
@@ -136,7 +136,7 @@ class _SignupAuthorState extends State<SignupAuthor> {
     setState(() {
       _image = File(pickedFile.path);
     });
-    Navigator.of(context).pop(); // Close the modal sheet
+    Navigator.of(context).pop();
   }
 
   Future<void> _register(BuildContext context) async {
@@ -164,7 +164,9 @@ class _SignupAuthorState extends State<SignupAuthor> {
       'isAuther': true,
       'BirthDate':
           '${selectedDate.year}-${selectedDate.month}-${selectedDate.day}',
-      'NationalityId': selectedCountry,
+      'NationalityId': '',
+      if (_image != null)
+        'ProfileImage': await MultipartFile.fromFile(_image!.path),
     });
 
     try {
@@ -173,7 +175,7 @@ class _SignupAuthorState extends State<SignupAuthor> {
         data: formData,
         options: Options(
           headers: {
-            HttpHeaders.contentTypeHeader: 'multipart/form-data',
+            Headers.contentTypeHeader: 'multipart/form-data',
           },
         ),
       );
@@ -187,25 +189,9 @@ class _SignupAuthorState extends State<SignupAuthor> {
         );
       } else {
         print('Registration failed: ${response.data}');
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: Text('Registration failed: ${response.data}'),
-            duration: Duration(seconds: 2),
-          ),
-        );
       }
     } catch (e) {
-      // Log the full error
       print('Error registering user: $e');
-      if (e is DioException && e.response != null) {
-        print('Response data: ${e.response?.data}');
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error registering user: $e'),
-          duration: Duration(seconds: 2),
-        ),
-      );
     }
   }
 
@@ -222,25 +208,27 @@ class _SignupAuthorState extends State<SignupAuthor> {
               children: [
                 Padding(
                   padding: const EdgeInsets.all(16.0),
-                  child: Text(
-                    'Fill your profile',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 25,
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                  child: Text(
-                    'Don’t worry, you can always change it later',
-                    style: TextStyle(fontSize: 10),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Center(
-                  child: Stack(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+                      Text(
+                        'Fill your profile',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 25,
+                        ),
+                      ),
+                      SizedBox(height: 5),
+                      Text(
+                        'Don’t worry, you can always change it later',
+                        style: TextStyle(fontSize: 10),
+                      ),
+                    ],
+                  ),
+                ),
+                Center(
+                  child: Column(children: [
+                    Stack(children: [
                       CircleAvatar(
                         radius: 100,
                         backgroundImage: _image != null
@@ -257,10 +245,9 @@ class _SignupAuthorState extends State<SignupAuthor> {
                           icon: Icon(Icons.add_a_photo),
                         ),
                       ),
-                    ],
-                  ),
+                    ])
+                  ]),
                 ),
-                SizedBox(height: 15),
                 Container(
                   padding: EdgeInsets.all(20),
                   decoration: BoxDecoration(
@@ -358,7 +345,10 @@ class _SignupAuthorState extends State<SignupAuthor> {
                       SizedBox(height: 5),
                       Row(
                         children: [
-                          SizedBox(width: 100, child: Text('Specialization')),
+                          SizedBox(
+                            width: 100,
+                            child: Text('Specialization'),
+                          ),
                           SizedBox(width: 5),
                           Expanded(
                             child: SpecializationDropdown(
@@ -408,27 +398,6 @@ class _SignupAuthorState extends State<SignupAuthor> {
                       ),
                       SizedBox(height: 5),
                       TextFormField(
-                        controller: emailController,
-                        decoration: InputDecoration(
-                          hintText: 'Email',
-                          border: OutlineInputBorder(
-                            borderSide: BorderSide(
-                              color: Color(0xFFC4C4C4),
-                            ),
-                            borderRadius: BorderRadius.circular(6),
-                          ),
-                          filled: true,
-                          fillColor: Colors.white,
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(height: 5),
-                      TextFormField(
                         controller: phoneNumberController,
                         decoration: InputDecoration(
                           hintText: 'Phone Number',
@@ -444,6 +413,27 @@ class _SignupAuthorState extends State<SignupAuthor> {
                         validator: (value) {
                           if (value == null || value.isEmpty) {
                             return 'Please enter your phone number';
+                          }
+                          return null;
+                        },
+                      ),
+                      SizedBox(height: 5),
+                      TextFormField(
+                        controller: emailController,
+                        decoration: InputDecoration(
+                          hintText: 'Email',
+                          border: OutlineInputBorder(
+                            borderSide: BorderSide(
+                              color: Color(0xFFC4C4C4),
+                            ),
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          filled: true,
+                          fillColor: Colors.white,
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter your email';
                           }
                           return null;
                         },
@@ -495,139 +485,325 @@ class _SignupAuthorState extends State<SignupAuthor> {
   }
 }
 
-class CountryDropdown extends StatefulWidget {
-  final String selectedCountry;
-  final ValueChanged<String?> onChanged;
-
-  CountryDropdown({required this.selectedCountry, required this.onChanged});
-
-  @override
-  _CountryDropdownState createState() => _CountryDropdownState();
-}
-
-class _CountryDropdownState extends State<CountryDropdown> {
-  List<String> countryOptions = [
-    'Bolivia',
-    'Egypt',
-    'Algeria',
-    'Belgium',
-    'Libya',
-    'Kuwait',
-    'Jordan',
-    'Iraq',
-    'United Arab Emirates',
-    'Saudi Arabia',
-    'Qatar',
-    'Bahrain',
-    'Syria',
-    'Oman',
-    'Lebanon',
-    'Yemen',
-    'Palestine',
-    'Tunisia'
-  ];
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
-      value: widget.selectedCountry,
-      onChanged: widget.onChanged,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        filled: true,
-        fillColor: Colors.white,
-      ),
-      items: countryOptions.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-    );
-  }
-}
-
-class SpecializationDropdown extends StatefulWidget {
-  final String selectedSpecialization;
-  final ValueChanged<String?> onChanged;
-
-  SpecializationDropdown(
-      {required this.selectedSpecialization, required this.onChanged});
-
-  @override
-  _SpecializationDropdownState createState() => _SpecializationDropdownState();
-}
-
-class _SpecializationDropdownState extends State<SpecializationDropdown> {
-  List<String> specializationOptions = [
-    'Science',
-    'History',
-    'Arts',
-    'Social Science',
-    'Technology',
-    'Medicine',
-    'Economics',
-    'Computer Science',
-    'Anthropology',
-    'Linguistics',
-    'Engineering'
-  ]; // Default specialization options
-
-  @override
-  Widget build(BuildContext context) {
-    return DropdownButtonFormField<String>(
-      value: widget.selectedSpecialization,
-      onChanged: widget.onChanged,
-      decoration: InputDecoration(
-        border: OutlineInputBorder(),
-        filled: true,
-        fillColor: Colors.white,
-      ),
-      items:
-          specializationOptions.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
-    );
-  }
-}
+List<String> fallbackDegrees = [
+  'Bachelor\'s',
+  'Master\'s',
+  'Doctorate',
+  'Professor',
+];
 
 class DegreeDropdown extends StatefulWidget {
   final String selectedDegree;
   final ValueChanged<String?> onChanged;
 
-  DegreeDropdown({required this.selectedDegree, required this.onChanged});
+  DegreeDropdown({
+    required this.selectedDegree,
+    required this.onChanged,
+  });
 
   @override
   _DegreeDropdownState createState() => _DegreeDropdownState();
 }
 
 class _DegreeDropdownState extends State<DegreeDropdown> {
-  List<String> degreeOptions = [
-    'Bachelor\'s',
-    'Master\'s',
-    'Doctorate',
-    'Professor'
-  ]; // Default degree options
+  List<String> degreeOptions = [];
+  String selectedDegree = 'Professor';
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchDegrees();
+  }
+
+  Future<void> _fetchDegrees() async {
+    try {
+      final response =
+          await Dio().get('http://readify.runasp.net/api/Auth/GetAllDegrees');
+      if (response.statusCode == 200) {
+        setState(() {
+          degreeOptions = List<String>.from(response.data['\$values']);
+          selectedDegree = degreeOptions.contains('Professor')
+              ? 'Professor'
+              : degreeOptions.first;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          degreeOptions = fallbackDegrees;
+          selectedDegree = 'Professor';
+          isLoading = false;
+        });
+        print('Failed to load degrees');
+      }
+    } catch (e) {
+      setState(() {
+        degreeOptions = fallbackDegrees;
+        selectedDegree = 'Professor';
+        isLoading = false;
+      });
+      print('Error fetching degrees: $e');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return DropdownButtonFormField<String>(
-      value: widget.selectedDegree,
-      onChanged: widget.onChanged,
+      value: selectedDegree,
+      onChanged: (isLoading || degreeOptions.isEmpty)
+          ? null
+          : (newValue) {
+              setState(() {
+                selectedDegree = newValue!;
+                widget.onChanged(newValue);
+              });
+            },
       decoration: InputDecoration(
         border: OutlineInputBorder(),
         filled: true,
         fillColor: Colors.white,
       ),
-      items: degreeOptions.map<DropdownMenuItem<String>>((String value) {
-        return DropdownMenuItem<String>(
-          value: value,
-          child: Text(value),
-        );
-      }).toList(),
+      items: isLoading
+          ? [
+              DropdownMenuItem<String>(
+                value: 'loading',
+                child: SizedBox(
+                  width: 200.0,
+                  height: 100.0,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              )
+            ]
+          : degreeOptions.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+    );
+  }
+}
+
+List<String> fallbackSpecializations = [
+  'Science',
+  'History',
+  'Arts',
+  'Social Science',
+  'Technology',
+  'Medicine',
+  'Economics',
+  'Computer Science',
+  'Anthropology',
+  'Linguistics',
+  'Engineering',
+];
+
+class SpecializationDropdown extends StatefulWidget {
+  final String selectedSpecialization;
+  final ValueChanged<String?> onChanged;
+
+  SpecializationDropdown({
+    required this.selectedSpecialization,
+    required this.onChanged,
+  });
+
+  @override
+  _SpecializationDropdownState createState() => _SpecializationDropdownState();
+}
+
+class _SpecializationDropdownState extends State<SpecializationDropdown> {
+  List<String> specializations = [];
+  String selectedSpecialization = 'Science';
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchSpecializations();
+  }
+
+  Future<void> _fetchSpecializations() async {
+    try {
+      final response = await Dio()
+          .get('http://readify.runasp.net/api/Auth/GetAllSpecializations');
+      if (response.statusCode == 200) {
+        setState(() {
+          specializations = List<String>.from(response.data['\$values']);
+          selectedSpecialization = specializations.contains('Science')
+              ? 'Science'
+              : specializations.first;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          specializations = fallbackSpecializations; // Use fallback list
+          selectedSpecialization = 'Science'; // Set a default value
+          isLoading = false;
+        });
+        print('Failed to load specializations');
+      }
+    } catch (e) {
+      setState(() {
+        specializations = fallbackSpecializations;
+        selectedSpecialization = 'Science';
+        isLoading = false;
+      });
+      print('Error fetching specializations: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      value: selectedSpecialization,
+      onChanged: (isLoading || specializations.isEmpty)
+          ? null
+          : (newValue) {
+              setState(() {
+                selectedSpecialization = newValue!;
+                widget.onChanged(newValue);
+              });
+            },
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+      items: isLoading
+          ? [
+              DropdownMenuItem<String>(
+                value: 'loading',
+                child: SizedBox(
+                  width: 200.0,
+                  height: 100.0,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              )
+            ]
+          : specializations.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
+    );
+  }
+}
+
+List<String> fallbackCountries = [
+  'Bolivia',
+  'Egypt',
+  'Algeria',
+  'Belgium',
+  'Libya',
+  'Kuwait',
+  'Jordan',
+  'Iraq',
+  'United Arab Emirates',
+  'Saudi Arabia',
+  'Qatar',
+  'Bahrain',
+  'Syria',
+  'Oman',
+  'Lebanon',
+  'Yemen',
+  'Palestine',
+  'Tunisia'
+];
+
+class CountryDropdown extends StatefulWidget {
+  final String selectedCountry;
+  final ValueChanged<String?> onChanged;
+
+  CountryDropdown({
+    required this.selectedCountry,
+    required this.onChanged,
+  });
+
+  @override
+  _CountryDropdownState createState() => _CountryDropdownState();
+}
+
+class _CountryDropdownState extends State<CountryDropdown> {
+  List<String> countries = [];
+  String selectedCountry = 'Egypt';
+  bool isLoading = true;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchCountries();
+  }
+
+  Future<void> _fetchCountries() async {
+    try {
+      final response = await Dio()
+          .get('http://readify.runasp.net/api/Auth/GetAllNationlaites');
+      if (response.statusCode == 200) {
+        setState(() {
+          countries = List<String>.from(response.data['\$values']);
+          selectedCountry =
+              countries.contains('Egypt') ? 'Egypt' : countries.first;
+          isLoading = false;
+        });
+      } else {
+        setState(() {
+          countries = fallbackCountries;
+          selectedCountry = 'Egypt';
+          isLoading = false;
+        });
+        print('Failed to load countries');
+      }
+    } catch (e) {
+      setState(() {
+        countries = fallbackCountries;
+        selectedCountry = 'Egypt';
+        isLoading = false;
+      });
+      print('Error fetching countries: $e');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonFormField<String>(
+      value: selectedCountry,
+      onChanged: (isLoading || countries.isEmpty)
+          ? null
+          : (newValue) {
+              setState(() {
+                selectedCountry = newValue!;
+                widget.onChanged(newValue);
+              });
+            },
+      decoration: InputDecoration(
+        border: OutlineInputBorder(),
+        filled: true,
+        fillColor: Colors.white,
+      ),
+      items: isLoading
+          ? [
+              DropdownMenuItem<String>(
+                value: 'loading',
+                child: SizedBox(
+                  width: 200.0,
+                  height: 100.0,
+                  child: Center(
+                    child: CircularProgressIndicator(),
+                  ),
+                ),
+              )
+            ]
+          : countries.map<DropdownMenuItem<String>>((String value) {
+              return DropdownMenuItem<String>(
+                value: value,
+                child: Text(value),
+              );
+            }).toList(),
     );
   }
 }

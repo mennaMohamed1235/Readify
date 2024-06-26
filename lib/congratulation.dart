@@ -24,12 +24,12 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Colors.white,
+        backgroundColor: Color(0xFFFDFDFD),
         body: Center(
           child: Image(
             image:
-                AssetImage('images/A36F26CE-D860-4C98-8827-00ED5857AA6E.jpeg'),
-            fit: BoxFit.cover,
+                AssetImage('images/245C2828-E6EF-4411-86EA-4C3D5364E97D.jpeg'),
+            fit: BoxFit.contain,
           ),
         ),
       ),
@@ -45,4 +45,8 @@ class Splach extends StatelessWidget {
       home: CongratulationsScreen(),
     );
   }
+}
+
+void main() {
+  runApp(CongratulationsScreen());
 }
