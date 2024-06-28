@@ -5,25 +5,24 @@ import 'package:readify/SignUpAuthor.dart';
 import 'package:readify/SignUpUser.dart';
 import 'package:readify/congratulation.dart';
 import 'package:readify/profile/personal_data.dart';
-import 'package:readify/setting.dart';
 import 'package:readify/signin.dart';
 import 'package:readify/verf.dart';
 
 void main() {
   // ignore: prefer_const_constructors
   // ignore: prefer_const_constructors
-  runApp(settings());
-  runApp(ChangePassword());
   // ignore: prefer_typing_uninitialized_variables
-  runApp(VerificationPage(email: ''));
   runApp(PersonalDataScreen());
-  runApp(Splach());
-  runApp(CongratulationsScreen());
   runApp(SignupAuthor());
   runApp(SignUpUser());
   runApp(SignIn());
+  runApp(VerificationPage(email: ''));
+  runApp(CongratulationsScreen());
+  runApp(Splach());
+  runApp(ChangePassword());
 }
 
+// ignore: use_key_in_widget_constructors
 class Splach extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -34,8 +33,10 @@ class Splach extends StatelessWidget {
   }
 }
 
+// ignore: use_key_in_widget_constructors
 class SplashScreen extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _SplashScreenState createState() => _SplashScreenState();
 }
 
@@ -44,6 +45,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     // Start a delayed future to navigate to the home screen after 5 seconds
+    // ignore: prefer_const_constructors
     Timer(Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
@@ -54,10 +56,14 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // ignore: prefer_const_constructors
     return Scaffold(
-      backgroundColor: Color(0xFF141478),
+      backgroundColor: const Color(0xFF141478),
+      // ignore: prefer_const_constructors
       body: Center(
+        // ignore: prefer_const_constructors
         child: Image(
+          // ignore: prefer_const_constructors
           image: AssetImage('images/74E328AC-07CA-4C9D-AA88-63AE66EF4C78.jpeg'),
         ),
       ),

@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:readify/ChangePassword.dart';
+import 'package:readify/profile/personal_data.dart';
 
+// ignore: use_key_in_widget_constructors
 class CongratulationsScreen extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _CongratulationsScreenState createState() => _CongratulationsScreenState();
 }
 
@@ -11,19 +13,21 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
   @override
   void initState() {
     super.initState();
+    // ignore: prefer_const_constructors
     Timer(Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => ChangePassword()),
+        MaterialPageRoute(builder: (context) => PersonalDataScreen()),
       );
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    // ignore: prefer_const_constructors
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Scaffold(
+      home: const Scaffold(
         backgroundColor: Color(0xFFFDFDFD),
         body: Center(
           child: Image(
@@ -37,6 +41,7 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
   }
 }
 
+// ignore: use_key_in_widget_constructors
 class Splach extends StatelessWidget {
   @override
   Widget build(BuildContext context) {

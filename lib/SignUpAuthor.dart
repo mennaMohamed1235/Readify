@@ -1,3 +1,4 @@
+// ignore_for_file: file_names
 import 'dart:io';
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -11,13 +12,23 @@ void main() {
   ));
 }
 
-class MyDatePicker extends StatefulWidget {
-  @override
-  _MyDatePickerState createState() => _MyDatePickerState();
-}
+// ignore: use_key_in_widget_constructors
+class MyDatePicker extends StatelessWidget {
+  final DateTime selectedDate;
+  final Function(DateTime) onDateChanged;
 
-class _MyDatePickerState extends State<MyDatePicker> {
-  DateTime selectedDate = DateTime(1920, 11, 22);
+  // ignore: use_key_in_widget_constructors
+  const MyDatePicker({required this.selectedDate, required this.onDateChanged});
+
+  @override
+  Widget build(BuildContext context) {
+    return ListTile(
+      title: Text(
+        'Birth Date: ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}',
+      ),
+      onTap: () => _selectDate(context),
+    );
+  }
 
   Future<void> _selectDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -26,26 +37,16 @@ class _MyDatePickerState extends State<MyDatePicker> {
       firstDate: DateTime(1900),
       lastDate: DateTime.now(),
     );
-    if (picked != null && picked != selectedDate) {
-      setState(() {
-        selectedDate = picked;
-      });
+    if (picked != null) {
+      onDateChanged(picked);
     }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return ListTile(
-      title: Text(
-        'BirthDate: ${selectedDate.year}-${selectedDate.month}-${selectedDate.day}',
-      ),
-      onTap: () => _selectDate(context),
-    );
   }
 }
 
+// ignore: use_key_in_widget_constructors
 class SignupAuthor extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _SignupAuthorState createState() => _SignupAuthorState();
 }
 
@@ -126,6 +127,7 @@ class _SignupAuthorState extends State<SignupAuthor> {
     setState(() {
       _image = File(pickedFile.path);
     });
+    // ignore: use_build_context_synchronously
     Navigator.of(context).pop(); // Close the modal sheet
   }
 
@@ -136,13 +138,14 @@ class _SignupAuthorState extends State<SignupAuthor> {
     setState(() {
       _image = File(pickedFile.path);
     });
+    // ignore: use_build_context_synchronously
     Navigator.of(context).pop();
   }
 
   Future<void> _register(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Please fill all required fields.'),
           duration: Duration(seconds: 2),
         ),
@@ -164,7 +167,9 @@ class _SignupAuthorState extends State<SignupAuthor> {
       'isAuther': true,
       'BirthDate':
           '${selectedDate.year}-${selectedDate.month}-${selectedDate.day}',
-      'NationalityId': '',
+      'NationalityId': 'e2c2904d-097e-4f77-d6c2-08dc47fc8d3b',
+      'Degree': selectedDegree,
+      'Specialization': selectedSpecialization,
       if (_image != null)
         'ProfileImage': await MultipartFile.fromFile(_image!.path),
     });
@@ -182,15 +187,18 @@ class _SignupAuthorState extends State<SignupAuthor> {
 
       if (response.statusCode == 200) {
         Navigator.pushReplacement(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(
               builder: (context) =>
                   VerificationPage(email: emailController.text)),
         );
       } else {
+        // ignore: avoid_print
         print('Registration failed: ${response.data}');
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Error registering user: $e');
     }
   }
@@ -198,7 +206,7 @@ class _SignupAuthorState extends State<SignupAuthor> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFFFFF),
+      backgroundColor: const Color(0xFFFFFFFF),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Form(
@@ -206,8 +214,8 @@ class _SignupAuthorState extends State<SignupAuthor> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Padding(
-                  padding: const EdgeInsets.all(16.0),
+                const Padding(
+                  padding: EdgeInsets.all(16.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -233,7 +241,8 @@ class _SignupAuthorState extends State<SignupAuthor> {
                         radius: 100,
                         backgroundImage: _image != null
                             ? FileImage(_image!)
-                            : AssetImage('images/149071.png') as ImageProvider,
+                            : const AssetImage('images/149071.png')
+                                as ImageProvider,
                       ),
                       Positioned(
                         bottom: 0,
@@ -242,15 +251,15 @@ class _SignupAuthorState extends State<SignupAuthor> {
                           onPressed: () {
                             _pickImage(context);
                           },
-                          icon: Icon(Icons.add_a_photo),
+                          icon: const Icon(Icons.add_a_photo),
                         ),
                       ),
                     ])
                   ]),
                 ),
                 Container(
-                  padding: EdgeInsets.all(20),
-                  decoration: BoxDecoration(
+                  padding: const EdgeInsets.all(20),
+                  decoration: const BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.only(
                       topLeft: Radius.circular(30),
@@ -269,7 +278,7 @@ class _SignupAuthorState extends State<SignupAuthor> {
                                 decoration: InputDecoration(
                                   hintText: 'First Name',
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                       color: Color(0xFFC4C4C4),
                                     ),
                                     borderRadius: BorderRadius.circular(6),
@@ -286,7 +295,7 @@ class _SignupAuthorState extends State<SignupAuthor> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 4),
+                          const SizedBox(width: 4),
                           Flexible(
                             child: SizedBox(
                               width: double.infinity,
@@ -295,7 +304,7 @@ class _SignupAuthorState extends State<SignupAuthor> {
                                 decoration: InputDecoration(
                                   hintText: 'Middle Name',
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                       color: Color(0xFFC4C4C4),
                                     ),
                                     borderRadius: BorderRadius.circular(6),
@@ -312,7 +321,7 @@ class _SignupAuthorState extends State<SignupAuthor> {
                               ),
                             ),
                           ),
-                          SizedBox(width: 4),
+                          const SizedBox(width: 4),
                           Flexible(
                             child: SizedBox(
                               width: double.infinity,
@@ -321,7 +330,7 @@ class _SignupAuthorState extends State<SignupAuthor> {
                                 decoration: InputDecoration(
                                   hintText: 'Last Name',
                                   border: OutlineInputBorder(
-                                    borderSide: BorderSide(
+                                    borderSide: const BorderSide(
                                       color: Color(0xFFC4C4C4),
                                     ),
                                     borderRadius: BorderRadius.circular(6),
@@ -340,16 +349,22 @@ class _SignupAuthorState extends State<SignupAuthor> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 5),
-                      MyDatePicker(),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
+                      MyDatePicker(
+                          selectedDate: selectedDate,
+                          onDateChanged: (newDate) {
+                            setState(() {
+                              selectedDate = newDate;
+                            });
+                          }),
+                      const SizedBox(height: 5),
                       Row(
                         children: [
-                          SizedBox(
+                          const SizedBox(
                             width: 100,
                             child: Text('Specialization'),
                           ),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           Expanded(
                             child: SpecializationDropdown(
                               selectedSpecialization: selectedSpecialization,
@@ -362,11 +377,11 @@ class _SignupAuthorState extends State<SignupAuthor> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Row(
                         children: [
-                          SizedBox(width: 100, child: Text('Degree')),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 100, child: Text('Degree')),
+                          const SizedBox(width: 5),
                           Expanded(
                             child: DegreeDropdown(
                               selectedDegree: selectedDegree,
@@ -379,11 +394,11 @@ class _SignupAuthorState extends State<SignupAuthor> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       Row(
                         children: [
-                          SizedBox(width: 100, child: Text('Country')),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 100, child: Text('Country')),
+                          const SizedBox(width: 5),
                           Expanded(
                             child: CountryDropdown(
                               selectedCountry: selectedCountry,
@@ -396,13 +411,13 @@ class _SignupAuthorState extends State<SignupAuthor> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       TextFormField(
                         controller: phoneNumberController,
                         decoration: InputDecoration(
                           hintText: 'Phone Number',
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Color(0xFFC4C4C4),
                             ),
                             borderRadius: BorderRadius.circular(6),
@@ -417,13 +432,13 @@ class _SignupAuthorState extends State<SignupAuthor> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       TextFormField(
                         controller: emailController,
                         decoration: InputDecoration(
                           hintText: 'Email',
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Color(0xFFC4C4C4),
                             ),
                             borderRadius: BorderRadius.circular(6),
@@ -438,14 +453,14 @@ class _SignupAuthorState extends State<SignupAuthor> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 5),
+                      const SizedBox(height: 5),
                       TextFormField(
                         controller: passwordController,
                         obscureText: true,
                         decoration: InputDecoration(
                           hintText: 'Password',
                           border: OutlineInputBorder(
-                            borderSide: BorderSide(
+                            borderSide: const BorderSide(
                               color: Color(0xFFC4C4C4),
                             ),
                             borderRadius: BorderRadius.circular(6),
@@ -460,18 +475,18 @@ class _SignupAuthorState extends State<SignupAuthor> {
                           return null;
                         },
                       ),
-                      SizedBox(height: 10),
+                      const SizedBox(height: 10),
                       ElevatedButton(
                         onPressed: () => _register(context),
-                        child: Text('Create'),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: Color(0xFF28277D),
-                          fixedSize: Size(500, 50),
+                          backgroundColor: const Color(0xFF28277D),
+                          fixedSize: const Size(500, 50),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(6),
                           ),
                         ),
+                        child: const Text('Create'),
                       ),
                     ],
                   ),
@@ -496,12 +511,14 @@ class DegreeDropdown extends StatefulWidget {
   final String selectedDegree;
   final ValueChanged<String?> onChanged;
 
+  // ignore: prefer_const_constructors_in_immutables, use_key_in_widget_constructors
   DegreeDropdown({
     required this.selectedDegree,
     required this.onChanged,
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _DegreeDropdownState createState() => _DegreeDropdownState();
 }
 
@@ -534,6 +551,7 @@ class _DegreeDropdownState extends State<DegreeDropdown> {
           selectedDegree = 'Professor';
           isLoading = false;
         });
+        // ignore: avoid_print
         print('Failed to load degrees');
       }
     } catch (e) {
@@ -542,6 +560,7 @@ class _DegreeDropdownState extends State<DegreeDropdown> {
         selectedDegree = 'Professor';
         isLoading = false;
       });
+      // ignore: avoid_print
       print('Error fetching degrees: $e');
     }
   }
@@ -558,14 +577,14 @@ class _DegreeDropdownState extends State<DegreeDropdown> {
                 widget.onChanged(newValue);
               });
             },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(),
         filled: true,
         fillColor: Colors.white,
       ),
       items: isLoading
           ? [
-              DropdownMenuItem<String>(
+              const DropdownMenuItem<String>(
                 value: 'loading',
                 child: SizedBox(
                   width: 200.0,
@@ -604,12 +623,14 @@ class SpecializationDropdown extends StatefulWidget {
   final String selectedSpecialization;
   final ValueChanged<String?> onChanged;
 
+  // ignore: use_key_in_widget_constructors, prefer_const_constructors_in_immutables
   SpecializationDropdown({
     required this.selectedSpecialization,
     required this.onChanged,
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _SpecializationDropdownState createState() => _SpecializationDropdownState();
 }
 
@@ -638,10 +659,11 @@ class _SpecializationDropdownState extends State<SpecializationDropdown> {
         });
       } else {
         setState(() {
-          specializations = fallbackSpecializations; // Use fallback list
-          selectedSpecialization = 'Science'; // Set a default value
+          specializations = fallbackSpecializations;
+          selectedSpecialization = 'Science';
           isLoading = false;
         });
+        // ignore: avoid_print
         print('Failed to load specializations');
       }
     } catch (e) {
@@ -650,6 +672,7 @@ class _SpecializationDropdownState extends State<SpecializationDropdown> {
         selectedSpecialization = 'Science';
         isLoading = false;
       });
+      // ignore: avoid_print
       print('Error fetching specializations: $e');
     }
   }
@@ -666,14 +689,14 @@ class _SpecializationDropdownState extends State<SpecializationDropdown> {
                 widget.onChanged(newValue);
               });
             },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(),
         filled: true,
         fillColor: Colors.white,
       ),
       items: isLoading
           ? [
-              DropdownMenuItem<String>(
+              const DropdownMenuItem<String>(
                 value: 'loading',
                 child: SizedBox(
                   width: 200.0,
@@ -719,12 +742,14 @@ class CountryDropdown extends StatefulWidget {
   final String selectedCountry;
   final ValueChanged<String?> onChanged;
 
+  // ignore: use_key_in_widget_constructors, prefer_const_constructors_in_immutables
   CountryDropdown({
     required this.selectedCountry,
     required this.onChanged,
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _CountryDropdownState createState() => _CountryDropdownState();
 }
 
@@ -756,6 +781,7 @@ class _CountryDropdownState extends State<CountryDropdown> {
           selectedCountry = 'Egypt';
           isLoading = false;
         });
+        // ignore: avoid_print
         print('Failed to load countries');
       }
     } catch (e) {
@@ -764,6 +790,7 @@ class _CountryDropdownState extends State<CountryDropdown> {
         selectedCountry = 'Egypt';
         isLoading = false;
       });
+      // ignore: avoid_print
       print('Error fetching countries: $e');
     }
   }
@@ -780,14 +807,14 @@ class _CountryDropdownState extends State<CountryDropdown> {
                 widget.onChanged(newValue);
               });
             },
-      decoration: InputDecoration(
+      decoration: const InputDecoration(
         border: OutlineInputBorder(),
         filled: true,
         fillColor: Colors.white,
       ),
       items: isLoading
           ? [
-              DropdownMenuItem<String>(
+              const DropdownMenuItem<String>(
                 value: 'loading',
                 child: SizedBox(
                   width: 200.0,

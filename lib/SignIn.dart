@@ -1,3 +1,4 @@
+// ignore_for_file: file_names
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -9,6 +10,7 @@ void main() {
   runApp(MyApp());
 }
 
+// ignore: use_key_in_widget_constructors
 class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -19,8 +21,10 @@ class MyApp extends StatelessWidget {
   }
 }
 
+// ignore: use_key_in_widget_constructors
 class SignIn extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _SignInState createState() => _SignInState();
 }
 
@@ -30,6 +34,7 @@ class _SignInState extends State<SignIn> {
   String errorMessage = '';
 
   Future<void> signIn() async {
+    // ignore: prefer_const_declarations
     final String apiUrl = 'http://readify.runasp.net/api/Auth/Login';
 
     if (_emailController.text.isEmpty || _passwordController.text.isEmpty) {
@@ -53,16 +58,20 @@ class _SignInState extends State<SignIn> {
 
       if (response.statusCode == 200) {
         Navigator.pushReplacement(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(builder: (context) => ChangePassword()),
         );
       } else {
+        // ignore: avoid_print
         print('Authentication failed: ${response.body}');
         setState(() {
-          errorMessage = 'Authentication failed';
+          errorMessage =
+              'Authentication failed: Email or Password is incorrect!';
         });
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Error: $e');
       setState(() {
         errorMessage = 'An error occurred. Please try again.';
@@ -79,17 +88,20 @@ class _SignInState extends State<SignIn> {
           child: SingleChildScrollView(
             child: Column(
               children: [
+                // ignore: sized_box_for_whitespace
                 Container(
                   height: MediaQuery.of(context).size.height * 0.7,
+                  width: double.infinity,
                   child: Image.asset(
                     'images/431382558_934333264581957_6966909f827530271850_n.jpg',
-                    fit: BoxFit.cover,
+                    fit: BoxFit.fill,
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
                     decoration: BoxDecoration(
+                      // ignore: use_full_hex_values_for_flutter_colors
                       color: const Color(0xFFDFDFDFD),
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -97,7 +109,7 @@ class _SignInState extends State<SignIn> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: TextFormField(
                         controller: _emailController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Email/username',
                           hintStyle: TextStyle(color: Color(0xFFD9D9D9)),
@@ -111,6 +123,7 @@ class _SignInState extends State<SignIn> {
                   padding: const EdgeInsets.symmetric(horizontal: 25),
                   child: Container(
                     decoration: BoxDecoration(
+                      // ignore: use_full_hex_values_for_flutter_colors
                       color: const Color(0xFFDFDFDFD),
                       borderRadius: BorderRadius.circular(12),
                     ),
@@ -118,7 +131,7 @@ class _SignInState extends State<SignIn> {
                       padding: const EdgeInsets.symmetric(horizontal: 20),
                       child: TextFormField(
                         controller: _passwordController,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Password',
                           hintStyle: TextStyle(color: Color(0xFFD9D9D9)),
@@ -133,17 +146,17 @@ class _SignInState extends State<SignIn> {
                   onPressed: () {
                     signIn();
                   },
-                  child: const Text('Sign in'),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
-                    backgroundColor: Color(0xFF28277D),
-                    fixedSize: const Size(450, 45),
+                    backgroundColor: const Color(0xFF28277D),
+                    fixedSize: const Size(290, 40),
                   ),
+                  child: const Text('Sign in'),
                 ),
                 const SizedBox(height: 1),
                 Row(
                   children: [
-                    const Text('    Don’t have an account?'),
+                    const Text('   Don’t have an account?'),
                     TextButton(
                       onPressed: () {
                         Navigator.push(
@@ -151,6 +164,7 @@ class _SignInState extends State<SignIn> {
                           MaterialPageRoute(builder: (context) => SignUpUser()),
                         );
                       },
+                      // ignore: sort_child_properties_last
                       child: const Text('Sign up'),
                       style: TextButton.styleFrom(
                         textStyle: const TextStyle(
@@ -161,6 +175,7 @@ class _SignInState extends State<SignIn> {
                     ),
                   ],
                 ),
+                const SizedBox(height: 0.01),
                 Row(
                   children: [
                     TextButton(
@@ -171,21 +186,21 @@ class _SignInState extends State<SignIn> {
                               builder: (context) => SignupAuthor()),
                         );
                       },
-                      child: const Text(' Sign up as an author'),
                       style: TextButton.styleFrom(
                         textStyle: const TextStyle(
                           fontSize: 15,
                           color: Color(0xFF28277D),
                         ),
                       ),
+                      child: const Text('Sign up as an author'),
                     ),
-                    SizedBox(width: 30),
+                    const SizedBox(width: 30),
                   ],
                 ),
                 errorMessage.isNotEmpty
                     ? Text(
                         errorMessage,
-                        style: TextStyle(color: Colors.red),
+                        style: const TextStyle(color: Colors.red),
                       )
                     : Container(),
               ],

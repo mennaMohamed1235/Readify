@@ -22,7 +22,7 @@ class PersonalDataScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFFDFDFD),
       appBar: AppBar(
-        title: Text(
+        title: const Text(
           'Your Profile',
           style: TextStyle(
             fontWeight: FontWeight.bold,
@@ -37,7 +37,7 @@ class PersonalDataScreen extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Center(
+              const Center(
                 child: CircleAvatar(
                   radius: 50,
                   backgroundImage: AssetImage(
@@ -45,14 +45,13 @@ class PersonalDataScreen extends StatelessWidget {
                   ),
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               buildDataRow("First Name", "menna"),
               buildDataRow("Middle Name", "mohamed"),
               buildDataRow("Last Name", "Elsayed"),
               buildDataRow("Birth Date", "22/11/2002"),
               buildDataRow("Phone number", "01092441655"),
-              buildDataRow("Email", "mennamohamed2002"),
-              SizedBox(height: 30),
+              const SizedBox(height: 30),
               buildButton(
                 text: "Change Password",
                 onPressed: () {
@@ -64,14 +63,16 @@ class PersonalDataScreen extends StatelessWidget {
                   );
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               buildButton(
                 text: "Edit Personal Data",
                 onPressed: () {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => EditProfileScreen(),
+                      builder: (context) => const EditProfileScreen(
+                        userId: '',
+                      ),
                     ),
                   );
                 },
@@ -88,10 +89,10 @@ class PersonalDataScreen extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: Row(
         children: [
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           Text(
             title + ": ",
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontSize: 16,
               fontWeight: FontWeight.bold,
@@ -99,7 +100,7 @@ class PersonalDataScreen extends StatelessWidget {
           ),
           Text(
             value,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontSize: 16,
             ),
@@ -116,9 +117,9 @@ class PersonalDataScreen extends StatelessWidget {
         height: 40,
         width: double.infinity,
         decoration: BoxDecoration(
-          color: Color(0xFF28277D),
+          color: const Color(0xFF28277D),
           borderRadius: BorderRadius.circular(25),
-          boxShadow: [
+          boxShadow: const [
             BoxShadow(
               color: Colors.black26,
               blurRadius: 2,
@@ -129,7 +130,7 @@ class PersonalDataScreen extends StatelessWidget {
         child: Center(
           child: Text(
             text,
-            style: TextStyle(
+            style: const TextStyle(
               fontSize: 16,
               color: Colors.white,
               fontFamily: "Poppins",

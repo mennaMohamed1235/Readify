@@ -6,9 +6,11 @@ import 'package:readify/congratulation.dart';
 class VerificationPage extends StatefulWidget {
   final String email;
 
+  // ignore: use_key_in_widget_constructors, prefer_const_constructors_in_immutables
   VerificationPage({required this.email});
 
   @override
+  // ignore: library_private_types_in_public_api
   _VerificationPageState createState() => _VerificationPageState();
 }
 
@@ -32,7 +34,9 @@ class _VerificationPageState extends State<VerificationPage> {
 
     String code = _controllers.map((controller) => controller.text).join();
 
+    // ignore: avoid_print
     print('Email: ${widget.email}');
+    // ignore: avoid_print
     print('Code: $code');
 
     final url = Uri.parse('http://readify.runasp.net/api/Auth/VerifyEmail')
@@ -49,6 +53,7 @@ class _VerificationPageState extends State<VerificationPage> {
 
       if (response.statusCode == 200) {
         Navigator.pushReplacement(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(builder: (context) => CongratulationsScreen()),
         );
@@ -62,12 +67,14 @@ class _VerificationPageState extends State<VerificationPage> {
         } else {
           try {
             final errorResponse = json.decode(responseBody);
+            // ignore: avoid_print
             print('Verification failed: $responseBody');
             setState(() {
               errorMessage = errorResponse['title'] ??
                   'Verification failed. Please check the code and try again.';
             });
           } catch (e) {
+            // ignore: avoid_print
             print('Error decoding response: $e');
             setState(() {
               errorMessage =
@@ -77,6 +84,7 @@ class _VerificationPageState extends State<VerificationPage> {
         }
       }
     } catch (error) {
+      // ignore: avoid_print
       print('Unexpected error: $error');
       setState(() {
         errorMessage = 'An error occurred. Please try again later.';
@@ -98,6 +106,7 @@ class _VerificationPageState extends State<VerificationPage> {
       );
 
       if (response.statusCode == 200) {
+        // ignore: avoid_print
         print('resend code');
       } else {
         String responseBody = response.body;
@@ -107,10 +116,12 @@ class _VerificationPageState extends State<VerificationPage> {
         } else {
           try {
             final errorResponse = json.decode(responseBody);
+            // ignore: avoid_print
             print('Error body: $responseBody');
             _showSnackBar(
                 'Failed to resend verification code: ${errorResponse['title']}');
           } catch (e) {
+            // ignore: avoid_print
             print('Error decoding response: $e');
             _showSnackBar(
                 'Failed to resend verification code. Please try again.');
@@ -128,6 +139,7 @@ class _VerificationPageState extends State<VerificationPage> {
         SnackBar(content: Text(message)),
       );
     } else {
+      // ignore: avoid_print
       print("ScaffoldMessenger not available to show snackbar: $message");
     }
   }
@@ -145,6 +157,7 @@ class _VerificationPageState extends State<VerificationPage> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(height: 50.0),
+                // ignore: sized_box_for_whitespace
                 Container(
                   height: MediaQuery.of(context).size.height * 0.3,
                   child: Image.asset(
@@ -160,7 +173,7 @@ class _VerificationPageState extends State<VerificationPage> {
                 Text(
                   'We sent a confirmation code to the email addreess that you provided: ${widget.email}',
                 ),
-                Text(
+                const Text(
                   'Please enter the 6-digit code ',
                 ),
                 const SizedBox(height: 50.0),
@@ -169,6 +182,7 @@ class _VerificationPageState extends State<VerificationPage> {
                   child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: List.generate(6, (index) {
+                      // ignore: sized_box_for_whitespace
                       return Container(
                         width: 50.0,
                         child: TextFormField(
@@ -180,11 +194,11 @@ class _VerificationPageState extends State<VerificationPage> {
                             counterText: "",
                             enabledBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(color: Colors.grey),
+                              borderSide: const BorderSide(color: Colors.grey),
                             ),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10.0),
-                              borderSide: BorderSide(color: Colors.blue),
+                              borderSide: const BorderSide(color: Colors.blue),
                             ),
                           ),
                           onChanged: (value) {
@@ -208,11 +222,12 @@ class _VerificationPageState extends State<VerificationPage> {
                 const SizedBox(height: 10.0),
                 TextButton(
                   onPressed: _resendCode,
-                  child: Text('Resend Code'),
+                  child: const Text('Resend Code'),
                 ),
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: _verifyCode,
+                  // ignore: sort_child_properties_last
                   child: const Text('Verify'),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
@@ -223,7 +238,7 @@ class _VerificationPageState extends State<VerificationPage> {
                 if (errorMessage.isNotEmpty)
                   Text(
                     errorMessage,
-                    style: TextStyle(color: Colors.red),
+                    style: const TextStyle(color: Colors.red),
                   ),
               ],
             ),

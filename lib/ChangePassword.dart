@@ -1,10 +1,13 @@
+// ignore_for_file: file_names
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 
+// ignore: use_key_in_widget_constructors
 class ChangePassword extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _ChangePasswordState createState() => _ChangePasswordState();
 }
 
@@ -42,6 +45,7 @@ class _ChangePasswordState extends State<ChangePassword> {
       "newPassword": newPasswordController.text,
     };
 
+    // ignore: prefer_const_declarations
     final String url = 'http://readify.runasp.net/api/Auth/ChangePasswordAsync';
     try {
       final http.Response response = await http.post(
@@ -53,13 +57,14 @@ class _ChangePasswordState extends State<ChangePassword> {
       );
 
       if (response.statusCode == 200) {
+        // ignore: avoid_print
         print('Password changed successfully');
       } else {
+        // ignore: avoid_print
         print('Failed to change password');
       }
     } catch (e) {
-      // Exception occurred during the HTTP request
-      // You can handle the exception scenario here
+      // ignore: avoid_print
       print('Exception occurred: $e');
     }
   }
@@ -179,7 +184,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                 errorMessage.isNotEmpty
                     ? Text(
                         errorMessage,
-                        style: TextStyle(color: Colors.black),
+                        style: const TextStyle(color: Colors.black),
                       )
                     : Container(),
                 const SizedBox(height: 15),
@@ -187,11 +192,13 @@ class _ChangePasswordState extends State<ChangePassword> {
                   onPressed: () {
                     changePassword();
                   },
+                  // ignore: sort_child_properties_last
                   child: const Text('Change password'),
                   style: ElevatedButton.styleFrom(
                     foregroundColor: Colors.white,
                     backgroundColor: const Color(0xFF28277D),
-                    fixedSize: const Size(450, 45),
+                    // ignore: prefer_const_constructors
+                    fixedSize: Size(290, 40),
                   ),
                 ),
               ],

@@ -1,3 +1,4 @@
+// ignore_for_file: file_names
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -17,8 +18,10 @@ void main() {
   );
 }
 
+// ignore: use_key_in_widget_constructors
 class SignUpUser extends StatefulWidget {
   @override
+  // ignore: library_private_types_in_public_api
   _SignUpUserState createState() => _SignUpUserState();
 }
 
@@ -39,7 +42,7 @@ class _SignUpUserState extends State<SignUpUser> {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        backgroundColor: Color(0xFFFFFFFF),
+        backgroundColor: const Color(0xFFFFFFFF),
         body: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
@@ -49,18 +52,18 @@ class _SignUpUserState extends State<SignUpUser> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
+                    const Text(
                       'Fill your profile',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 25,
                       ),
                     ),
-                    Text(
+                    const Text(
                       'Don’t worry, you can always change it later',
                       style: TextStyle(fontSize: 10),
                     ),
-                    SizedBox(height: 5),
+                    const SizedBox(height: 5),
                     Center(
                       child: Stack(
                         children: [
@@ -68,7 +71,7 @@ class _SignUpUserState extends State<SignUpUser> {
                               ? CircleAvatar(
                                   radius: 100,
                                   backgroundImage: MemoryImage(_image!))
-                              : CircleAvatar(
+                              : const CircleAvatar(
                                   radius: 100,
                                   backgroundImage: AssetImage(
                                       'images/149071.png'), // Default image
@@ -80,13 +83,13 @@ class _SignUpUserState extends State<SignUpUser> {
                               onPressed: () {
                                 _pickImage(context);
                               },
-                              icon: Icon(Icons.add_a_photo),
+                              icon: const Icon(Icons.add_a_photo),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    SizedBox(height: 15),
+                    const SizedBox(height: 15),
                     Padding(
                       padding: const EdgeInsets.all(20),
                       child: Column(
@@ -105,8 +108,8 @@ class _SignUpUserState extends State<SignUpUser> {
                                   decoration: InputDecoration(
                                     hintText: 'First Name',
                                     border: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Color(0xFFC4C4C4)),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFC4C4C4)),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     filled: true,
@@ -114,7 +117,7 @@ class _SignUpUserState extends State<SignUpUser> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               Expanded(
                                 child: TextFormField(
                                   controller: middleNameController,
@@ -127,8 +130,8 @@ class _SignUpUserState extends State<SignUpUser> {
                                   decoration: InputDecoration(
                                     hintText: 'Middle Name',
                                     border: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Color(0xFFC4C4C4)),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFC4C4C4)),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     filled: true,
@@ -136,7 +139,7 @@ class _SignUpUserState extends State<SignUpUser> {
                                   ),
                                 ),
                               ),
-                              SizedBox(width: 10),
+                              const SizedBox(width: 10),
                               Expanded(
                                 child: TextFormField(
                                   controller: lastNameController,
@@ -149,8 +152,8 @@ class _SignUpUserState extends State<SignUpUser> {
                                   decoration: InputDecoration(
                                     hintText: 'Last Name',
                                     border: OutlineInputBorder(
-                                      borderSide:
-                                          BorderSide(color: Color(0xFFC4C4C4)),
+                                      borderSide: const BorderSide(
+                                          color: Color(0xFFC4C4C4)),
                                       borderRadius: BorderRadius.circular(6),
                                     ),
                                     filled: true,
@@ -160,7 +163,7 @@ class _SignUpUserState extends State<SignUpUser> {
                               ),
                             ],
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           MyDatePicker(
                               selectedDate: selectedDate,
                               onDateChanged: (newDate) {
@@ -168,7 +171,7 @@ class _SignUpUserState extends State<SignUpUser> {
                                   selectedDate = newDate;
                                 });
                               }),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           TextFormField(
                             inputFormatters: [
                               FilteringTextInputFormatter.digitsOnly,
@@ -184,14 +187,14 @@ class _SignUpUserState extends State<SignUpUser> {
                               hintText: 'Phone Number',
                               border: OutlineInputBorder(
                                 borderSide:
-                                    BorderSide(color: Color(0xFFC4C4C4)),
+                                    const BorderSide(color: Color(0xFFC4C4C4)),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               filled: true,
                               fillColor: Colors.white,
                             ),
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           TextFormField(
                             controller: emailController,
                             validator: (value) {
@@ -200,7 +203,7 @@ class _SignUpUserState extends State<SignUpUser> {
                               }
                               return null;
                             },
-                            decoration: InputDecoration(
+                            decoration: const InputDecoration(
                               hintText: 'Email',
                               border: OutlineInputBorder(
                                 borderSide:
@@ -210,7 +213,7 @@ class _SignUpUserState extends State<SignUpUser> {
                               fillColor: Colors.white,
                             ),
                           ),
-                          SizedBox(height: 5),
+                          const SizedBox(height: 5),
                           TextFormField(
                             controller: passwordController,
                             validator: (value) {
@@ -224,27 +227,27 @@ class _SignUpUserState extends State<SignUpUser> {
                               hintText: 'Password',
                               border: OutlineInputBorder(
                                 borderSide:
-                                    BorderSide(color: Color(0xFFC4C4C4)),
+                                    const BorderSide(color: Color(0xFFC4C4C4)),
                                 borderRadius: BorderRadius.circular(6),
                               ),
                               filled: true,
                               fillColor: Colors.white,
                             ),
                           ),
-                          SizedBox(height: 20),
+                          const SizedBox(height: 20),
                           ElevatedButton(
                             onPressed: () {
                               _register(context);
                             },
-                            child: Text('Create'),
                             style: ElevatedButton.styleFrom(
                               foregroundColor: Colors.white,
-                              backgroundColor: Color(0xFF28277D),
-                              fixedSize: Size(500, 50),
+                              backgroundColor: const Color(0xFF28277D),
+                              fixedSize: const Size(500, 50),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(6),
                               ),
                             ),
+                            child: const Text('Create'),
                           ),
                         ],
                       ),
@@ -262,7 +265,7 @@ class _SignUpUserState extends State<SignUpUser> {
   Future<void> _register(BuildContext context) async {
     if (!_formKey.currentState!.validate()) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Please fill all required fields.'),
           duration: Duration(seconds: 2),
         ),
@@ -284,7 +287,9 @@ class _SignUpUserState extends State<SignUpUser> {
       'isAuther': false,
       'BirthDate':
           '${selectedDate.year}-${selectedDate.month}-${selectedDate.day}',
-      'NationalityId': '',
+      'NationalityId': null,
+      'Specialization': null,
+      'Degree': null,
     });
 
     try {
@@ -300,15 +305,18 @@ class _SignUpUserState extends State<SignUpUser> {
 
       if (response.statusCode == 200) {
         Navigator.pushReplacement(
+          // ignore: use_build_context_synchronously
           context,
           MaterialPageRoute(
               builder: (context) =>
                   VerificationPage(email: emailController.text)),
         );
       } else {
+        // ignore: avoid_print
         print('Registration failed: ${response.data}');
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Error registering user: $e');
     }
   }
@@ -376,6 +384,7 @@ class _SignUpUserState extends State<SignUpUser> {
     setState(() {
       _image = File(returnImage.path).readAsBytesSync();
     });
+    // ignore: use_build_context_synchronously
     Navigator.of(context).pop(); //close the model sheet
   }
 
@@ -386,6 +395,7 @@ class _SignUpUserState extends State<SignUpUser> {
     setState(() {
       _image = File(returnImage.path).readAsBytesSync();
     });
+    // ignore: use_build_context_synchronously
     Navigator.of(context).pop();
   }
 }
@@ -394,7 +404,8 @@ class MyDatePicker extends StatelessWidget {
   final DateTime selectedDate;
   final Function(DateTime) onDateChanged;
 
-  MyDatePicker({required this.selectedDate, required this.onDateChanged});
+  // ignore: use_key_in_widget_constructors
+  const MyDatePicker({required this.selectedDate, required this.onDateChanged});
 
   @override
   Widget build(BuildContext context) {

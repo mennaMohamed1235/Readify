@@ -1,11 +1,15 @@
+import 'dart:convert';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:http/http.dart' as http;
 
 class EditProfileScreen extends StatefulWidget {
   static String routeName = "/EditProfileScreen";
 
-  const EditProfileScreen({Key? key}) : super(key: key);
+  final String userId;
+
+  const EditProfileScreen({Key? key, required this.userId}) : super(key: key);
 
   @override
   State<EditProfileScreen> createState() => _EditProfileScreenState();
@@ -13,8 +17,14 @@ class EditProfileScreen extends StatefulWidget {
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
   late File _image;
-  bool buttonClicked = false;
   final _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _firstNameController = TextEditingController();
+  final TextEditingController _middleNameController = TextEditingController();
+  final TextEditingController _lastNameController = TextEditingController();
+  final TextEditingController _birthDateController = TextEditingController();
+  final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   void initState() {
@@ -33,21 +43,21 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
         appBar: AppBar(
           backgroundColor: Color(0xFF28277D),
           centerTitle: true,
-          title: Text(
+          title: const Text(
             "Update Your Profile",
             style: TextStyle(
               color: Colors.white,
             ),
           ),
           leading: IconButton(
-            icon: Icon(Icons.arrow_back),
+            icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.of(context).pop();
             },
             color: Colors.white, // Set the color of the icon to white
           ),
-          iconTheme:
-              IconThemeData(color: Colors.white), // Ensure icon color is white
+          iconTheme: const IconThemeData(
+              color: Colors.white), // Ensure icon color is white
         ),
         body: SafeArea(
           child: Center(
@@ -65,8 +75,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       Stack(
                         children: [
-                          // ignore: unnecessary_null_comparison
-                          _image != null && _image.path.isNotEmpty
+                          _image.path.isNotEmpty
                               ? CircleAvatar(
                                   radius: 100,
                                   backgroundImage: FileImage(_image),
@@ -95,6 +104,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         children: [
                           Expanded(
                             child: TextFormField(
+                              controller: _firstNameController,
                               decoration: InputDecoration(
                                 labelText: "First Name",
                                 hintText: "Enter your first name",
@@ -114,6 +124,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           SizedBox(width: 10),
                           Expanded(
                             child: TextFormField(
+                              controller: _middleNameController,
                               decoration: InputDecoration(
                                 labelText: "Middle Name",
                                 hintText: "Enter your middle name",
@@ -133,6 +144,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                           SizedBox(width: 10),
                           Expanded(
                             child: TextFormField(
+                              controller: _lastNameController,
                               decoration: InputDecoration(
                                 labelText: "Last Name",
                                 hintText: "Enter your last name",
@@ -155,10 +167,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         height: media.height * 0.02,
                       ),
                       TextFormField(
+                        controller: _birthDateController,
                         decoration: InputDecoration(
                           labelText: "Birth Date",
                           hintText: "Enter your birth date",
-                          prefixIcon: Icon(Icons.calendar_today),
+                          prefixIcon: const Icon(Icons.calendar_today),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
@@ -174,10 +187,11 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         height: media.height * 0.02,
                       ),
                       TextFormField(
+                        controller: _phoneNumberController,
                         decoration: InputDecoration(
                           labelText: "Phone Number",
                           hintText: "Enter your phone number",
-                          prefixIcon: Icon(Icons.phone),
+                          prefixIcon: const Icon(Icons.phone),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
@@ -193,6 +207,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                         height: media.height * 0.02,
                       ),
                       TextFormField(
+                        controller: _emailController,
                         decoration: InputDecoration(
                           labelText: "Email",
                           hintText: "Enter your email",
@@ -214,14 +229,23 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ElevatedButton(
                         onPressed: () {
                           if (_formKey.currentState!.validate()) {
-                            // Process form data
+                            final profile = UserProfile(
+                              userId: widget.userId,
+                              firstName: _firstNameController.text,
+                              middleName: _middleNameController.text,
+                              lastName: _lastNameController.text,
+                              phoneNumber: _phoneNumberController.text,
+                              imageUrl: _image.path,
+                              birthDate: _birthDateController.text,
+                            );
+                            updateProfile(profile);
                           }
                         },
-                        child: Text("Update Profile"),
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: Color(0xFF28277D),
+                          backgroundColor: const Color(0xFF28277D),
                         ),
+                        child: const Text("Update Profile"),
                       ),
                       SizedBox(
                         height: media.height * 0.015,
@@ -314,12 +338,53 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   }
 }
 
-class MyApp extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: EditProfileScreen(),
-    );
+class UserProfile {
+  final String userId;
+  final String firstName;
+  final String middleName;
+  final String lastName;
+  final String phoneNumber;
+  final String imageUrl;
+  final String birthDate;
+
+  UserProfile({
+    required this.userId,
+    required this.firstName,
+    required this.middleName,
+    required this.lastName,
+    required this.phoneNumber,
+    required this.imageUrl,
+    required this.birthDate,
+  });
+
+  Map<String, dynamic> toJson() => {
+        'userId': userId,
+        'firstName': firstName,
+        'middleName': middleName,
+        'lastName': lastName,
+        'phoneNumber': phoneNumber,
+        'imageUrl': imageUrl,
+        'birthDate': birthDate,
+      };
+}
+
+Future<void> updateProfile(UserProfile profile) async {
+  final url = Uri.parse(
+      'http://readify.runasp.net/api/Auth/update/059017c0-522c-413b-8766-a8532afbb5e7');
+
+  final response = await http.put(
+    url,
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: jsonEncode(profile.toJson()),
+  );
+
+  if (response.statusCode == 200) {
+    // Profile updated successfully
+    print('Profile updated successfully');
+  } else {
+    // Error updating profile
+    print('Failed to update profile: ${response.body}');
   }
 }
