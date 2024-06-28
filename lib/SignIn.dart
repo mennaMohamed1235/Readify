@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import 'package:readify/ChangePassword.dart';
 import 'package:readify/SignUpAuthor.dart';
 import 'package:readify/SignUpUser.dart';
+import 'package:readify/relation.dart';
 
 void main() {
   runApp(MyApp());
@@ -57,6 +58,8 @@ class _SignInState extends State<SignIn> {
       );
 
       if (response.statusCode == 200) {
+        var signinmodel = LoginResponse.fromJson(jsonDecode(response.body));
+
         Navigator.pushReplacement(
           // ignore: use_build_context_synchronously
           context,

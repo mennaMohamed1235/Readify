@@ -26,7 +26,6 @@ class LoginResponse {
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) {
-    var values;
     return LoginResponse(
       id: json['id'],
       message: json['message'],
@@ -35,7 +34,7 @@ class LoginResponse {
       email: json['email'],
       userId: json['userId'],
       emailConfirmed: json['emailConfirmed'],
-      roles: List<String>.from(json['roles']['$values']),
+      roles: List<String>.from(json['roles']),
       token: json['token'],
       expiresOn: DateTime.parse(json['expiresOn']),
       imageUrl: json['imageUrl'],
@@ -43,10 +42,6 @@ class LoginResponse {
   }
 
   Map<String, dynamic> toJson() {
-    // ignore: prefer_typing_uninitialized_variables
-    var values;
-    // ignore: prefer_typing_uninitialized_variables
-    var $id;
     return {
       'id': id,
       'message': message,
@@ -55,10 +50,7 @@ class LoginResponse {
       'email': email,
       'userId': userId,
       'emailConfirmed': emailConfirmed,
-      'roles': {
-        $id: '2',
-        '$values': roles,
-      },
+      'roles': roles,
       'token': token,
       'expiresOn': expiresOn.toIso8601String(),
       'imageUrl': imageUrl,

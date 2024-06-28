@@ -4,7 +4,6 @@ import 'package:readify/ChangePassword.dart';
 import 'package:readify/SignUpAuthor.dart';
 import 'package:readify/SignUpUser.dart';
 import 'package:readify/congratulation.dart';
-import 'package:readify/profile/personal_data.dart';
 import 'package:readify/signin.dart';
 import 'package:readify/verf.dart';
 
@@ -12,7 +11,6 @@ void main() {
   // ignore: prefer_const_constructors
   // ignore: prefer_const_constructors
   // ignore: prefer_typing_uninitialized_variables
-  runApp(PersonalDataScreen());
   runApp(SignupAuthor());
   runApp(SignUpUser());
   runApp(SignIn());

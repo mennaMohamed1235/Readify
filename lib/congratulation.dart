@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:readify/profile/personal_data.dart';
+import 'package:readify/SignIn.dart';
 
 // ignore: use_key_in_widget_constructors
 class CongratulationsScreen extends StatefulWidget {
@@ -17,7 +17,7 @@ class _CongratulationsScreenState extends State<CongratulationsScreen> {
     Timer(Duration(seconds: 5), () {
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => PersonalDataScreen()),
+        MaterialPageRoute(builder: (context) => SignIn()),
       );
     });
   }

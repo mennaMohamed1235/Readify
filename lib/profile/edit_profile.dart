@@ -24,7 +24,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   final TextEditingController _lastNameController = TextEditingController();
   final TextEditingController _birthDateController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
-  final TextEditingController _emailController = TextEditingController();
 
   @override
   void initState() {
@@ -54,10 +53,9 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
             onPressed: () {
               Navigator.of(context).pop();
             },
-            color: Colors.white, // Set the color of the icon to white
+            color: Colors.white,
           ),
-          iconTheme: const IconThemeData(
-              color: Colors.white), // Ensure icon color is white
+          iconTheme: const IconThemeData(color: Colors.white),
         ),
         body: SafeArea(
           child: Center(
@@ -205,23 +203,6 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
                       ),
                       SizedBox(
                         height: media.height * 0.02,
-                      ),
-                      TextFormField(
-                        controller: _emailController,
-                        decoration: InputDecoration(
-                          labelText: "Email",
-                          hintText: "Enter your email",
-                          prefixIcon: Icon(Icons.email),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
-                          ),
-                        ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your email';
-                          }
-                          return null;
-                        },
                       ),
                       SizedBox(
                         height: media.height * 0.05,
@@ -381,10 +362,8 @@ Future<void> updateProfile(UserProfile profile) async {
   );
 
   if (response.statusCode == 200) {
-    // Profile updated successfully
     print('Profile updated successfully');
   } else {
-    // Error updating profile
     print('Failed to update profile: ${response.body}');
   }
 }

@@ -1,22 +1,75 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import 'package:readify/ChangePassword.dart';
 import 'package:readify/profile/edit_profile.dart';
 
-void main() {
-  runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  User user = await fetchUserData(
+      'USER_ID'); // Replace 'USER_ID' with the actual user ID
+  runApp(MyApp(user: user));
 }
 
 class MyApp extends StatelessWidget {
+  final User user;
+
+  MyApp({required this.user});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: PersonalDataScreen(),
+      home: PersonalDataScreen(
+        user: user,
+        use: '',
+      ),
+    );
+  }
+}
+
+Future<User> fetchUserData(String userId) async {
+  final response =
+      await http.get(Uri.parse('http://readify.runasp.net/api/Auth/$userId'));
+
+  if (response.statusCode == 200) {
+    return User.fromJson(jsonDecode(response.body));
+  } else {
+    throw Exception('Failed to load user data');
+  }
+}
+
+class User {
+  final String firstName;
+  final String middleName;
+  final String lastName;
+  final String birthDate;
+  final String phoneNumber;
+
+  User({
+    required this.firstName,
+    required this.middleName,
+    required this.lastName,
+    required this.birthDate,
+    required this.phoneNumber,
+  });
+
+  factory User.fromJson(Map<String, dynamic> json) {
+    return User(
+      firstName: json['firstName'],
+      middleName: json['middleName'],
+      lastName: json['lastName'],
+      birthDate: json['birthDate'],
+      phoneNumber: json['phoneNumber'],
     );
   }
 }
 
 class PersonalDataScreen extends StatelessWidget {
+  final User user;
+
+  PersonalDataScreen({required this.user, required String use});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,11 +99,11 @@ class PersonalDataScreen extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-              buildDataRow("First Name", "menna"),
-              buildDataRow("Middle Name", "mohamed"),
-              buildDataRow("Last Name", "Elsayed"),
-              buildDataRow("Birth Date", "22/11/2002"),
-              buildDataRow("Phone number", "01092441655"),
+              buildDataRow("First Name", user.firstName),
+              buildDataRow("Middle Name", user.middleName),
+              buildDataRow("Last Name", user.lastName),
+              buildDataRow("Birth Date", user.birthDate),
+              buildDataRow("Phone number", user.phoneNumber),
               const SizedBox(height: 30),
               buildButton(
                 text: "Change Password",
