@@ -305,7 +305,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     setState(() {
       _image = File(returnImage.path);
     });
-    Navigator.of(context).pop(); //close the model sheet
+    Navigator.of(context).pop(); //close the modal sheet
   }
 
   Future _pickImageFromCamera() async {
@@ -316,6 +316,40 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       _image = File(returnImage.path);
     });
     Navigator.of(context).pop();
+  }
+
+  Future<void> updateProfile(UserProfile profile) async {
+    print('useid: ${widget.userId}');
+    final url =
+        Uri.parse('http://readify.runasp.net/api/Auth/update/${widget.userId}');
+
+    // ignore: unused_local_variable
+    final response = await http.put(
+      url,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode(profile.toJson()),
+    );
+
+    try {
+      final response = await http.post(
+        url,
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(profile.toJson()),
+      );
+
+      if (response.statusCode == 200) {
+        print('Profile updated successfully');
+      } else {
+        print(
+            'Failed to update profile: ${response.statusCode} - ${response.body}');
+      }
+    } catch (e) {
+      print('Exception during update: $e');
+    }
   }
 }
 
@@ -347,23 +381,4 @@ class UserProfile {
         'imageUrl': imageUrl,
         'birthDate': birthDate,
       };
-}
-
-Future<void> updateProfile(UserProfile profile) async {
-  final url = Uri.parse(
-      'http://readify.runasp.net/api/Auth/update/059017c0-522c-413b-8766-a8532afbb5e7');
-
-  final response = await http.put(
-    url,
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: jsonEncode(profile.toJson()),
-  );
-
-  if (response.statusCode == 200) {
-    print('Profile updated successfully');
-  } else {
-    print('Failed to update profile: ${response.body}');
-  }
 }

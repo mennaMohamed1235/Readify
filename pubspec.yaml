@@ -28,23 +28,18 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  bottom_picker: ^2.6.0
+  cupertino_icons: ^1.0.6
+  dio: ^5.4.3+1
   flutter:
     sdk: flutter
-
-
-  # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.6
-  google_fonts: ^6.2.1
-  bottom_picker: ^2.6.0
   flutter_datetime_picker: ^1.5.1
+  google_fonts: ^6.2.1
   http: ^1.2.1
   image_picker: ^1.1.0
-  dio: ^5.4.3+1
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
@@ -52,10 +47,11 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^3.0.0
+  flutter_test:
+    sdk: flutter
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
-
 # The following section is specific to Flutter packages.
 flutter:
 
@@ -66,22 +62,19 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-   - images/images (1).png
-   - images/431382558_934333264581957_6966909f827530271850_n.jpg
-   - images/A36F26CE-D860-4C98-8827-00ED5857AA6E.jpeg
-   - images/21885736-833B-451D-A4A4-2DFE81AD8819.jpeg
-   - images/74E328AC-07CA-4C9D-AA88-63AE66EF4C78.jpeg 
-   - images/245C2828-E6EF-4411-86EA-4C3D5364E97D.jpeg
-   - images/149071.png
-   - assets/icons/
+    - images/images (1).png
+    - images/431382558_934333264581957_6966909f827530271850_n.jpg
+    - images/A36F26CE-D860-4C98-8827-00ED5857AA6E.jpeg
+    - images/21885736-833B-451D-A4A4-2DFE81AD8819.jpeg
+    - images/74E328AC-07CA-4C9D-AA88-63AE66EF4C78.jpeg
+    - images/245C2828-E6EF-4411-86EA-4C3D5364E97D.jpeg
+    - images/149071.png
+    - assets/icons/
   #   - images/a_dot_ham.jpeg
-
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
-
   # For details regarding adding assets from package dependencies, see
   # https://flutter.dev/assets-and-images/#from-packages
-
   # To add custom fonts to your application, add a fonts section here,
   # in this "flutter" section. Each entry in this list should have a
   # "family" key with the font family name, and a "fonts" key with a

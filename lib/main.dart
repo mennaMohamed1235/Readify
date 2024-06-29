@@ -13,11 +13,12 @@ void main() {
   // ignore: prefer_typing_uninitialized_variables
   runApp(SignupAuthor());
   runApp(SignUpUser());
-  runApp(SignIn());
   runApp(VerificationPage(email: ''));
   runApp(CongratulationsScreen());
   runApp(Splach());
   runApp(ChangePassword());
+    runApp(SignIn());
+
 }
 
 // ignore: use_key_in_widget_constructors

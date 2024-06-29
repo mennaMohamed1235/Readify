@@ -2,28 +2,60 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:readify/ChangePassword.dart';
+import 'package:readify/SignIn.dart';
 import 'package:readify/profile/edit_profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  User user = await fetchUserData(
-      'USER_ID'); // Replace 'USER_ID' with the actual user ID
-  runApp(MyApp(user: user));
+// ignore: use_key_in_widget_constructors
+class ProfileView extends StatefulWidget {
+  @override
+  State<ProfileView> createState() => _ProfileViewState();
 }
 
-class MyApp extends StatelessWidget {
-  final User user;
+class _ProfileViewState extends State<ProfileView> {
+  late User user;
+  late LoginResponse signInModel;
+  bool isLoading = true;
 
-  MyApp({required this.user});
+  @override
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
+
+  Future<void> loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? signInModelJson = prefs.getString('signInModel');
+    signInModel =
+        LoginResponse.fromJson(jsonDecode(signInModelJson ?? 'USER_ID'));
+
+    try {
+      User fetchedUser = await fetchUserData(signInModel.userId ?? 'userId');
+      setState(() {
+        user = fetchedUser;
+        isLoading = false;
+      });
+    } catch (e) {
+      // ignore: avoid_print
+      print('Error loading user data: $e');
+      setState(() {
+        isLoading = false;
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: PersonalDataScreen(
-        user: user,
-        use: '',
-      ),
+    return Scaffold(
+      body: isLoading
+          ? const Center(child: CircularProgressIndicator())
+          // ignore: unnecessary_null_comparison
+          : user == null
+              ? const Center(child: Text('No user data found'))
+              : PersonalDataScreen(
+                  user: user,
+                  userid: signInModel.userId ?? '',
+                ),
     );
   }
 }
@@ -67,8 +99,10 @@ class User {
 
 class PersonalDataScreen extends StatelessWidget {
   final User user;
+  final String userid;
 
-  PersonalDataScreen({required this.user, required String use});
+  // ignore: prefer_const_constructors_in_immutables, use_key_in_widget_constructors
+  PersonalDataScreen({required this.user, required this.userid});
 
   @override
   Widget build(BuildContext context) {
@@ -144,6 +178,7 @@ class PersonalDataScreen extends StatelessWidget {
         children: [
           const SizedBox(width: 20),
           Text(
+            // ignore: prefer_interpolation_to_compose_strings
             title + ": ",
             style: const TextStyle(
               color: Colors.black,

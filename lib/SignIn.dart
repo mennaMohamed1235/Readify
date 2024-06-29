@@ -1,11 +1,12 @@
 // ignore_for_file: file_names
 import 'dart:convert';
+import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
-import 'package:readify/ChangePassword.dart';
 import 'package:readify/SignUpAuthor.dart';
 import 'package:readify/SignUpUser.dart';
-import 'package:readify/relation.dart';
+import 'package:readify/congratulation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   runApp(MyApp());
@@ -56,26 +57,26 @@ class _SignInState extends State<SignIn> {
           'password': _passwordController.text,
         }),
       );
-
       if (response.statusCode == 200) {
-        var signinmodel = LoginResponse.fromJson(jsonDecode(response.body));
+        var signInModel = LoginResponse.fromJson(jsonDecode(response.body));
+        String signInModelJson = jsonEncode(signInModel.toJson());
 
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setString('signInModel', signInModelJson);
+
+        log(signInModel.userId ?? 'No user ID'); // Add null check
         Navigator.pushReplacement(
           // ignore: use_build_context_synchronously
           context,
-          MaterialPageRoute(builder: (context) => ChangePassword()),
+          MaterialPageRoute(builder: (context) => CongratulationsScreen()),
         );
       } else {
-        // ignore: avoid_print
-        print('Authentication failed: ${response.body}');
         setState(() {
           errorMessage =
               'Authentication failed: Email or Password is incorrect!';
         });
       }
     } catch (e) {
-      // ignore: avoid_print
-      print('Error: $e');
       setState(() {
         errorMessage = 'An error occurred. Please try again.';
       });
@@ -212,5 +213,26 @@ class _SignInState extends State<SignIn> {
         ),
       ),
     );
+  }
+}
+
+class LoginResponse {
+  final String? userId;
+  final String? token;
+
+  LoginResponse({this.userId, this.token});
+
+  factory LoginResponse.fromJson(Map<String, dynamic> json) {
+    return LoginResponse(
+      userId: json['userId'] as String?,
+      token: json['token'] as String?,
+    );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'token': token,
+    };
   }
 }
