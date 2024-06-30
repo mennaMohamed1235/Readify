@@ -82,7 +82,9 @@ class _ChangePasswordState extends State<ChangePassword> {
               const SizedBox(width: 0.5),
               IconButton(
                 icon: const Icon(Icons.arrow_back_ios_new_rounded),
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.pop(context);
+                },
               ),
               const SizedBox(width: 30),
               Text('Change password',

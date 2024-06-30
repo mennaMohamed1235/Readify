@@ -2,8 +2,6 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:readify/ChangePassword.dart';
 import 'package:readify/SignUpAuthor.dart';
-import 'package:readify/SignUpUser.dart';
-import 'package:readify/congratulation.dart';
 import 'package:readify/signin.dart';
 import 'package:readify/verf.dart';
 
@@ -12,13 +10,9 @@ void main() {
   // ignore: prefer_const_constructors
   // ignore: prefer_typing_uninitialized_variables
   runApp(SignupAuthor());
-  runApp(SignUpUser());
   runApp(VerificationPage(email: ''));
-  runApp(CongratulationsScreen());
   runApp(Splach());
   runApp(ChangePassword());
-    runApp(SignIn());
-
 }
 
 // ignore: use_key_in_widget_constructors

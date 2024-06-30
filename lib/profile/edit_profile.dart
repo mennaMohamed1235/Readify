@@ -9,6 +9,7 @@ class EditProfileScreen extends StatefulWidget {
 
   final String userId;
 
+  // ignore: use_super_parameters
   const EditProfileScreen({Key? key, required this.userId}) : super(key: key);
 
   @override
@@ -16,7 +17,7 @@ class EditProfileScreen extends StatefulWidget {
 }
 
 class _EditProfileScreenState extends State<EditProfileScreen> {
-  late File _image;
+  File? _image;
   final _formKey = GlobalKey<FormState>();
 
   final TextEditingController _firstNameController = TextEditingController();
@@ -28,211 +29,220 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
   @override
   void initState() {
     super.initState();
-    _image = File('');
+    _image = null;
   }
 
   @override
   Widget build(BuildContext context) {
     var media = MediaQuery.of(context).size;
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        backgroundColor: Colors.white,
-        appBar: AppBar(
-          backgroundColor: Color(0xFF28277D),
-          centerTitle: true,
-          title: const Text(
-            "Update Your Profile",
-            style: TextStyle(
-              color: Colors.white,
-            ),
-          ),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
+    return Scaffold(
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        backgroundColor: const Color(0xFF28277D),
+        centerTitle: true,
+        title: const Text(
+          "Edit Personal Data",
+          style: TextStyle(
             color: Colors.white,
           ),
-          iconTheme: const IconThemeData(color: Colors.white),
         ),
-        body: SafeArea(
-          child: Center(
-            child: SingleChildScrollView(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
-                child: Form(
-                  key: _formKey,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SizedBox(
-                        height: media.height * 0.02,
-                      ),
-                      Stack(
-                        children: [
-                          _image.path.isNotEmpty
-                              ? CircleAvatar(
-                                  radius: 100,
-                                  backgroundImage: FileImage(_image),
-                                )
-                              : CircleAvatar(
-                                  radius: 100,
-                                  backgroundImage: AssetImage(
-                                      'images/149071.png'), // Default image
-                                ),
-                          Positioned(
-                            bottom: 0,
-                            left: 140,
-                            child: IconButton(
-                              onPressed: () {
-                                _pickImage(context);
-                              },
-                              icon: Icon(Icons.add_a_photo),
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: media.height * 0.02,
-                      ),
-                      Row(
-                        children: [
-                          Expanded(
-                            child: TextFormField(
-                              controller: _firstNameController,
-                              decoration: InputDecoration(
-                                labelText: "First Name",
-                                hintText: "Enter your first name",
-                                prefixIcon: Icon(Icons.person),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your first name';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: TextFormField(
-                              controller: _middleNameController,
-                              decoration: InputDecoration(
-                                labelText: "Middle Name",
-                                hintText: "Enter your middle name",
-                                prefixIcon: Icon(Icons.person),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your middle name';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                          SizedBox(width: 10),
-                          Expanded(
-                            child: TextFormField(
-                              controller: _lastNameController,
-                              decoration: InputDecoration(
-                                labelText: "Last Name",
-                                hintText: "Enter your last name",
-                                prefixIcon: Icon(Icons.person),
-                                border: OutlineInputBorder(
-                                  borderRadius: BorderRadius.circular(15),
-                                ),
-                              ),
-                              validator: (value) {
-                                if (value == null || value.isEmpty) {
-                                  return 'Please enter your last name';
-                                }
-                                return null;
-                              },
-                            ),
-                          ),
-                        ],
-                      ),
-                      SizedBox(
-                        height: media.height * 0.02,
-                      ),
-                      TextFormField(
-                        controller: _birthDateController,
-                        decoration: InputDecoration(
-                          labelText: "Birth Date",
-                          hintText: "Enter your birth date",
-                          prefixIcon: const Icon(Icons.calendar_today),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          color: Colors.white,
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
+      ),
+      body: SafeArea(
+        child: Center(
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(
+                      height: media.height * 0.02,
+                    ),
+                    Stack(
+                      children: [
+                        CircleAvatar(
+                          radius: 100,
+                          backgroundImage: _image != null
+                              ? FileImage(_image!)
+                              : const AssetImage('images/149071.png')
+                                  as ImageProvider,
+                        ),
+                        Positioned(
+                          bottom: 0,
+                          left: 140,
+                          child: IconButton(
+                            onPressed: () {
+                              _pickImage(context);
+                            },
+                            icon: const Icon(Icons.add_a_photo),
                           ),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your birth date';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: media.height * 0.02,
-                      ),
-                      TextFormField(
-                        controller: _phoneNumberController,
-                        decoration: InputDecoration(
-                          labelText: "Phone Number",
-                          hintText: "Enter your phone number",
-                          prefixIcon: const Icon(Icons.phone),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(15),
+                      ],
+                    ),
+                    SizedBox(
+                      height: media.height * 0.02,
+                    ),
+                    Row(
+                      children: [
+                        Expanded(
+                          child: TextFormField(
+                            controller: _firstNameController,
+                            decoration: InputDecoration(
+                              labelText: "First Name",
+                              hintText: "Enter your first name",
+                              prefixIcon: const Icon(Icons.person),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your first name';
+                              }
+                              return null;
+                            },
                           ),
                         ),
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter your phone number';
-                          }
-                          return null;
-                        },
-                      ),
-                      SizedBox(
-                        height: media.height * 0.02,
-                      ),
-                      SizedBox(
-                        height: media.height * 0.05,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {
-                          if (_formKey.currentState!.validate()) {
-                            final profile = UserProfile(
-                              userId: widget.userId,
-                              firstName: _firstNameController.text,
-                              middleName: _middleNameController.text,
-                              lastName: _lastNameController.text,
-                              phoneNumber: _phoneNumberController.text,
-                              imageUrl: _image.path,
-                              birthDate: _birthDateController.text,
-                            );
-                            updateProfile(profile);
-                          }
-                        },
-                        style: ElevatedButton.styleFrom(
-                          foregroundColor: Colors.white,
-                          backgroundColor: const Color(0xFF28277D),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _middleNameController,
+                            decoration: InputDecoration(
+                              labelText: "Middle Name",
+                              hintText: "Enter your middle name",
+                              prefixIcon: const Icon(Icons.person),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your middle name';
+                              }
+                              return null;
+                            },
+                          ),
                         ),
-                        child: const Text("Update Profile"),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: TextFormField(
+                            controller: _lastNameController,
+                            decoration: InputDecoration(
+                              labelText: "Last Name",
+                              hintText: "Enter your last name",
+                              prefixIcon: const Icon(Icons.person),
+                              border: OutlineInputBorder(
+                                borderRadius: BorderRadius.circular(15),
+                              ),
+                            ),
+                            validator: (value) {
+                              if (value == null || value.isEmpty) {
+                                return 'Please enter your last name';
+                              }
+                              return null;
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                    SizedBox(
+                      height: media.height * 0.02,
+                    ),
+                    TextFormField(
+                      controller: _birthDateController,
+                      decoration: InputDecoration(
+                        labelText: "Birth Date",
+                        hintText: "Enter your birth date",
+                        prefixIcon: const Icon(Icons.calendar_today),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
                       ),
-                      SizedBox(
-                        height: media.height * 0.015,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your birth date';
+                        }
+                        return null;
+                      },
+                      onTap: () async {
+                        DateTime? pickedDate = await showDatePicker(
+                          context: context,
+                          initialDate: DateTime.now(),
+                          firstDate: DateTime(1900),
+                          lastDate: DateTime.now(),
+                        );
+                        if (pickedDate != null) {
+                          setState(() {
+                            _birthDateController.text =
+                                pickedDate.toString().split(' ')[0];
+                          });
+                        }
+                      },
+                      readOnly: true,
+                    ),
+                    SizedBox(
+                      height: media.height * 0.02,
+                    ),
+                    TextFormField(
+                      controller: _phoneNumberController,
+                      decoration: InputDecoration(
+                        labelText: "Phone Number",
+                        hintText: "Enter your phone number",
+                        prefixIcon: const Icon(Icons.phone),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(15),
+                        ),
                       ),
-                    ],
-                  ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter your phone number';
+                        }
+                        return null;
+                      },
+                    ),
+                    SizedBox(
+                      height: media.height * 0.02,
+                    ),
+                    SizedBox(
+                      height: media.height * 0.05,
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          final profile = UserProfile(
+                            userId: widget.userId,
+                            firstName: _firstNameController.text,
+                            middleName: _middleNameController.text,
+                            lastName: _lastNameController.text,
+                            phoneNumber: _phoneNumberController.text,
+                            imageUrl: _image?.path ?? '',
+                            birthDate: _birthDateController.text,
+                          );
+                          updateProfile(profile);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: const Color(0xFF28277D),
+                      ),
+                      child: const Text("Enter"),
+                    ),
+                    SizedBox(
+                      height: media.height * 0.015,
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -305,6 +315,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     setState(() {
       _image = File(returnImage.path);
     });
+    // ignore: use_build_context_synchronously
     Navigator.of(context).pop(); //close the modal sheet
   }
 
@@ -315,25 +326,16 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
     setState(() {
       _image = File(returnImage.path);
     });
+    // ignore: use_build_context_synchronously
     Navigator.of(context).pop();
   }
 
   Future<void> updateProfile(UserProfile profile) async {
-    print('useid: ${widget.userId}');
     final url =
         Uri.parse('http://readify.runasp.net/api/Auth/update/${widget.userId}');
 
-    // ignore: unused_local_variable
-    final response = await http.put(
-      url,
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(profile.toJson()),
-    );
-
     try {
-      final response = await http.post(
+      final response = await http.put(
         url,
         headers: {
           'Content-Type': 'application/json',
@@ -342,12 +344,25 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
       );
 
       if (response.statusCode == 200) {
+        // ignore: avoid_print
         print('Profile updated successfully');
+        setState(() {
+          // Update the controllers with new data
+          _firstNameController.text = profile.firstName;
+          _middleNameController.text = profile.middleName;
+          _lastNameController.text = profile.lastName;
+          _phoneNumberController.text = profile.phoneNumber;
+          _birthDateController.text = profile.birthDate;
+        });
+        // ignore: use_build_context_synchronously
+        Navigator.pop(context, profile);
       } else {
+        // ignore: avoid_print
         print(
             'Failed to update profile: ${response.statusCode} - ${response.body}');
       }
     } catch (e) {
+      // ignore: avoid_print
       print('Exception during update: $e');
     }
   }
@@ -372,13 +387,15 @@ class UserProfile {
     required this.birthDate,
   });
 
-  Map<String, dynamic> toJson() => {
-        'userId': userId,
-        'firstName': firstName,
-        'middleName': middleName,
-        'lastName': lastName,
-        'phoneNumber': phoneNumber,
-        'imageUrl': imageUrl,
-        'birthDate': birthDate,
-      };
+  Map<String, dynamic> toJson() {
+    return {
+      'userId': userId,
+      'firstName': firstName,
+      'middleName': middleName,
+      'lastName': lastName,
+      'phoneNumber': phoneNumber,
+      'imageUrl': imageUrl,
+      'birthDate': birthDate,
+    };
+  }
 }

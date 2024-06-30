@@ -101,7 +101,7 @@ class PersonalDataScreen extends StatelessWidget {
   final User user;
   final String userid;
 
-  // ignore: prefer_const_constructors_in_immutables, use_key_in_widget_constructors
+  // ignore: use_key_in_widget_constructors, prefer_const_constructors_in_immutables
   PersonalDataScreen({required this.user, required this.userid});
 
   @override
@@ -109,14 +109,22 @@ class PersonalDataScreen extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xFFFDFDFD),
       appBar: AppBar(
+        backgroundColor: const Color(0xFF28277D),
+        centerTitle: true,
         title: const Text(
-          'Your Profile',
+          "Personl Data",
           style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
+            color: Colors.white,
           ),
         ),
-        backgroundColor: const Color(0xFFFDFDFD),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+          color: Colors.white,
+        ),
+        iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 50),
@@ -157,8 +165,8 @@ class PersonalDataScreen extends StatelessWidget {
                   Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => const EditProfileScreen(
-                        userId: '',
+                      builder: (context) => EditProfileScreen(
+                        userId: userid,
                       ),
                     ),
                   );
